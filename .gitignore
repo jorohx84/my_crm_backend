@@ -1,0 +1,60 @@
+# Allgemeine Python-Dateien
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pyc
+
+# Virtuelle Umgebung (venv, env, .env)
+env/
+venv/
+*.env
+*.venv
+
+# Django-Datenbanken
+db.sqlite3
+*.sqlite3
+
+# Django-Migrationsdateien
+*/migrations/
+*.log
+*.bak
+
+# Medien- und statische Dateien (werden normalerweise im Produktionsserver generiert)
+media/
+static/
+
+# .env-Dateien für Umgebungsvariablen
+.env
+
+# IDEs/Editoren (z.B. VSCode, PyCharm, etc.)
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# System-Dateien
+.DS_Store
+Thumbs.db
+
+# Coverage-Daten (wenn du Tests machst)
+.coverage
+
+# PyInstaller
+# (falls du .exe-Dateien erstellst)
+dist/
+build/
+
+# Python Wheels
+*.whl
+
+# Docker (falls du Docker verwendest)
+docker-compose.override.yml
+*.log
+
+# Andere temporäre Dateien
+*.swp
+*.swo
+
+# Environment-Dateien
+.env/
