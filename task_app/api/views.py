@@ -1,5 +1,5 @@
 from rest_framework import generics, status
-from .serializers import CreateTaskSerializer, TaskListSerializer
+from .serializers import CreateTaskSerializer, TaskListSerializer, SingleTaskSerializer
 from ..models import Task
 
 class CreateTaskView(generics.CreateAPIView):
@@ -17,3 +17,9 @@ class TaskListView(generics.ListAPIView):
         customer_id=self.kwargs.get('customer_id')
         queryset = Task.objects.filter(customer_id=customer_id)
         return queryset
+    
+
+class SingleTaskView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = SingleTaskSerializer
+   
