@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Task
+from ..models import Task, Comment, Subtask
 from profile_app.models import UserProfile
 from customer_app.models import Customer
 
@@ -19,12 +19,13 @@ class CreateTaskSerializer(serializers.ModelSerializer):
             "created_at",
             "due_date",
             "reviewer",
-
+            "log",
         ]
         read_only_fields = [
             "id", 
             "created_at", 
-            "reviewer"
+            "reviewer",
+           
             ]
         
 class ReviewerAssigneeSerializer(serializers.ModelSerializer):
@@ -64,10 +65,30 @@ class TaskCustomerSerializer(serializers.ModelSerializer):
             "companyname",
         ]
 
+
+class CreateCommentSerializer(serializers.ModelSerializer):
+    creator = serializers.PrimaryKeyRelatedField(read_only=True)
+    task = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ["id", "text", "task", "created_at", "creator"]
+
+
+class ListCommentSerializer(serializers.ModelSerializer):
+    creator = ReviewerAssigneeSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ["id", "text", "creator", "created_at", "task"]
+        
+
 class SingleTaskSerializer(serializers.ModelSerializer):
     reviewer = ReviewerAssigneeSerializer(read_only=True)
     assignee = ReviewerAssigneeSerializer(read_only=True)
     customer = TaskCustomerSerializer(read_only=True)
+    comments = ListCommentSerializer( source="task_comment", many=True, read_only=True)
+    
     class Meta:
         model = Task
         fields = [
@@ -81,4 +102,33 @@ class SingleTaskSerializer(serializers.ModelSerializer):
             "created_at",
             "due_date",
             "reviewer",
+            "comments",
+            "log"
         ]
+
+
+class CreateSubtaskSerializer(serializers.ModelSerializer):
+    reviewer = serializers.PrimaryKeyRelatedField(read_only=True)
+    task = serializers.PrimaryKeyRelatedField(read_only=True)
+    class Meta:
+        model = Subtask
+        fields = [
+            "id",
+            "task",
+            "title",
+            "description",
+            "customer",
+            "assignee",
+            "state",
+            "priority",
+            "created_at",
+            "due_date",
+            "reviewer",
+            "log",
+        ]
+        read_only_fields = [
+            "id", 
+            "created_at", 
+            "reviewer",
+           
+            ]
