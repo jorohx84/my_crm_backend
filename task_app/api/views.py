@@ -43,7 +43,7 @@ class CommentUpdateView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=ListCommentSerializer
 
 
-class SubtaskCreatetView(generics.ListCreateAPIView):
+class SubtaskCreatetView(generics.CreateAPIView):
     queryset = Subtask.objects.all()
     serializer_class = CreateSubtaskSerializer
 
@@ -54,3 +54,11 @@ class SubtaskCreatetView(generics.ListCreateAPIView):
             reviewer = self.request.user.userprofile,
             task=task
         )
+
+class SubtaskListView(generics.ListAPIView):
+    serializer_class=CreateSubtaskSerializer
+
+    def get_queryset(self):
+        task_id = self.kwargs['task_id']
+        queryset = Subtask.objects.filter(task_id=task_id)
+        return queryset
