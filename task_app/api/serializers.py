@@ -132,3 +132,25 @@ class CreateSubtaskSerializer(serializers.ModelSerializer):
             "reviewer",
            
             ]
+        
+
+class SubtaskListSerializer(serializers.ModelSerializer):
+    reviewer = ReviewerAssigneeSerializer(read_only=True)
+    assignee = ReviewerAssigneeSerializer(read_only=True)
+    task=serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = Task
+        fields = [
+            "id",
+            "task",
+            "title",
+            "description",
+            # "customer",
+            "assignee",
+            "state",
+            "priority",
+            "created_at",
+            "due_date",
+            "reviewer",
+        ]

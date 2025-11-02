@@ -1,5 +1,5 @@
 from rest_framework import generics, status
-from .serializers import CreateTaskSerializer, TaskListSerializer, SingleTaskSerializer, CreateCommentSerializer, ListCommentSerializer, CreateSubtaskSerializer
+from .serializers import CreateTaskSerializer, TaskListSerializer, SingleTaskSerializer, CreateCommentSerializer, ListCommentSerializer, CreateSubtaskSerializer, SubtaskListSerializer
 from ..models import Task, Comment, Subtask
 
 class CreateTaskView(generics.CreateAPIView):
@@ -56,9 +56,10 @@ class SubtaskCreatetView(generics.CreateAPIView):
         )
 
 class SubtaskListView(generics.ListAPIView):
-    serializer_class=CreateSubtaskSerializer
+    serializer_class=SubtaskListSerializer
 
     def get_queryset(self):
         task_id = self.kwargs['task_id']
         queryset = Subtask.objects.filter(task_id=task_id)
         return queryset
+    
