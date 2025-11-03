@@ -1,15 +1,16 @@
 from rest_framework import serializers
-from ..models import Task, Comment, Subtask
+from ..models import Task, Comment
 from profile_app.models import UserProfile
 from customer_app.models import Customer
 
 class CreateTaskSerializer(serializers.ModelSerializer):
     reviewer = serializers.PrimaryKeyRelatedField(read_only=True)
-    
+    parent = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Task
         fields = [
             "id",
+            "parent",
             "title",
             "description",
             "customer",
@@ -20,6 +21,7 @@ class CreateTaskSerializer(serializers.ModelSerializer):
             "due_date",
             "reviewer",
             "log",
+            "type",
         ]
         read_only_fields = [
             "id", 
@@ -42,6 +44,35 @@ class ReviewerAssigneeSerializer(serializers.ModelSerializer):
 class TaskListSerializer(serializers.ModelSerializer):
     reviewer = ReviewerAssigneeSerializer(read_only=True)
     assignee = ReviewerAssigneeSerializer(read_only=True)
+    parent = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = Task
+        fields = [
+            "id",
+            "parent",
+            "title",
+            "description",
+            "customer",
+            "assignee",
+            "state",
+            "priority",
+            "created_at",
+            "due_date",
+            "reviewer",
+            "type",
+        ]
+
+class TaskCustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = [
+            "id",
+            "companyname",
+        ]
+
+
+class TaskUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = [
@@ -55,16 +86,8 @@ class TaskListSerializer(serializers.ModelSerializer):
             "created_at",
             "due_date",
             "reviewer",
+            "log",
         ]
-
-class TaskCustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
-        fields = [
-            "id",
-            "companyname",
-        ]
-
 
 class CreateCommentSerializer(serializers.ModelSerializer):
     creator = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -88,11 +111,12 @@ class SingleTaskSerializer(serializers.ModelSerializer):
     assignee = ReviewerAssigneeSerializer(read_only=True)
     customer = TaskCustomerSerializer(read_only=True)
     comments = ListCommentSerializer( source="task_comment", many=True, read_only=True)
-    
+    parent = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Task
         fields = [
             "id",
+            "parent",
             "title",
             "description",
             "customer",
@@ -103,36 +127,11 @@ class SingleTaskSerializer(serializers.ModelSerializer):
             "due_date",
             "reviewer",
             "comments",
-            "log"
-        ]
-
-
-class CreateSubtaskSerializer(serializers.ModelSerializer):
-    reviewer = serializers.PrimaryKeyRelatedField(read_only=True)
-    task = serializers.PrimaryKeyRelatedField(read_only=True)
-    class Meta:
-        model = Subtask
-        fields = [
-            "id",
-            "task",
-            "title",
-            "description",
-            "customer",
-            "assignee",
-            "state",
-            "priority",
-            "created_at",
-            "due_date",
-            "reviewer",
             "log",
+            "type",
         ]
-        read_only_fields = [
-            "id", 
-            "created_at", 
-            "reviewer",
-           
-            ]
-        
+
+
 
 class SubtaskListSerializer(serializers.ModelSerializer):
     reviewer = ReviewerAssigneeSerializer(read_only=True)
@@ -146,11 +145,14 @@ class SubtaskListSerializer(serializers.ModelSerializer):
             "task",
             "title",
             "description",
-            # "customer",
+            "customer",
             "assignee",
             "state",
             "priority",
             "created_at",
             "due_date",
             "reviewer",
+            "type",
         ]
+
+
