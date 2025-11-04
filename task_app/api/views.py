@@ -1,4 +1,6 @@
 from rest_framework import generics, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .serializers import CreateTaskSerializer, TaskListSerializer, SingleTaskSerializer, CreateCommentSerializer, ListCommentSerializer, TaskUpdateSerializer
 from ..models import Task, Comment
 
@@ -60,3 +62,22 @@ class SubtaskListView(generics.ListAPIView):
         queryset = Task.objects.filter(parent_id=parent_id, type="subtask")
         return queryset
 
+class SubtaskCountView(APIView):
+    def get(self, request, pk):
+        try:
+            task = Task.objects.get(pk=pk)
+        except Task.DoesNotExist:
+            return Response({'error': 'No Task Found'}, status=status.HTTP_404_NOT_FOUND)
+
+        subtasks = task.subtasks
+        total_count = subtasks.count()
+        completed_subtasks = subtasks.filter(state='done')
+        completed_count = completed_subtasks.count()
+
+        return Response({
+            "total_count": total_count,
+            "completed_count":completed_count 
+             })
+          
+
+        

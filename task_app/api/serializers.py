@@ -63,6 +63,14 @@ class TaskListSerializer(serializers.ModelSerializer):
             "type",
         ]
 
+class ParentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = [
+            "id",
+            "title",
+        ]
+
 class TaskCustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
@@ -87,6 +95,7 @@ class TaskUpdateSerializer(serializers.ModelSerializer):
             "due_date",
             "reviewer",
             "log",
+            "checklist",
         ]
 
 class CreateCommentSerializer(serializers.ModelSerializer):
@@ -111,7 +120,7 @@ class SingleTaskSerializer(serializers.ModelSerializer):
     assignee = ReviewerAssigneeSerializer(read_only=True)
     customer = TaskCustomerSerializer(read_only=True)
     comments = ListCommentSerializer( source="task_comment", many=True, read_only=True)
-    parent = serializers.PrimaryKeyRelatedField(read_only=True)
+    parent = ParentSerializer(read_only=True)
     class Meta:
         model = Task
         fields = [
@@ -129,6 +138,7 @@ class SingleTaskSerializer(serializers.ModelSerializer):
             "comments",
             "log",
             "type",
+            "checklist",
         ]
 
 
