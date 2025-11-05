@@ -3,7 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import CreateTaskSerializer, TaskListSerializer, SingleTaskSerializer, CreateCommentSerializer, ListCommentSerializer, TaskUpdateSerializer
 from ..models import Task, Comment
-
+from profile_app.models import UserProfile
+from django.shortcuts import get_object_or_404
 class CreateTaskView(generics.CreateAPIView):
     queryset=Task.objects.all()
     serializer_class=CreateTaskSerializer
@@ -80,4 +81,10 @@ class SubtaskCountView(APIView):
              })
           
 
-        
+class TaskBoardView(generics.ListAPIView):
+    serializer_class = TaskListSerializer 
+
+    def get_queryset(self):
+        user_id = self.kwargs.get('pk')
+        tasks = Task.objects.filter(assignee_id=user_id)
+        return tasks

@@ -23,4 +23,5 @@ urlpatterns = [
     path('api/', include('profile_app.api.urls')),
     path('api/', include('customer_app.api.urls')),
     path('api/', include('task_app.api.urls')),
+
 ]
