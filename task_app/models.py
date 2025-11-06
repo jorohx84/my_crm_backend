@@ -32,7 +32,7 @@ class Task(models.Model):
     log = models.JSONField(default=list, blank=True)
     type = models.CharField(default="task")
     checklist = models.JSONField(default=list, null=True, blank=True)
-
+    board_position = models.IntegerField(default=0)
 
 
 

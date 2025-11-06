@@ -61,6 +61,7 @@ class TaskListSerializer(serializers.ModelSerializer):
             "due_date",
             "reviewer",
             "type",
+            "board_position",
         ]
 
 class ParentSerializer(serializers.ModelSerializer):
@@ -96,6 +97,7 @@ class TaskUpdateSerializer(serializers.ModelSerializer):
             "reviewer",
             "log",
             "checklist",
+            "board_position",
         ]
 
 class CreateCommentSerializer(serializers.ModelSerializer):
