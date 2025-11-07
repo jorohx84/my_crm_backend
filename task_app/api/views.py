@@ -96,3 +96,12 @@ class TaskBoardReviewerView(generics.ListAPIView):
         user_id = self.kwargs['user_id']
         tasks = Task.objects.filter(reviewer_id=user_id)
         return tasks
+    
+
+class TaskBoardRealesesView(generics.ListAPIView):
+    serializer_class=TaskListSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        tasks = Task.objects.filter(reviewer_id=user_id, state='done')
+        return tasks

@@ -61,6 +61,7 @@ class TaskListSerializer(serializers.ModelSerializer):
             "due_date",
             "reviewer",
             "type",
+            "checklist",
             "board_position",
         ]
 
