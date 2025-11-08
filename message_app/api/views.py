@@ -30,15 +30,11 @@ class SystemMessageUpdateView(generics.RetrieveUpdateDestroyAPIView):
 
 class NewMessagesCountView(APIView):
 
-    def get(self, request, *args, **kwargs):
-        time = kwargs['timestamp']
+    def get(self, request):
         user = request.user
-      
-      
-        if not time:
-            return Response({"detail": "Invalid timestamp format"}, status=status.HTTP_400_BAD_REQUEST)
+    
 
-        messages = SystemMessage.objects.filter(recipient_id=user.id, created_at__gt=time)
+        messages = SystemMessage.objects.filter(recipient_id=user.id, is_read=False)
 
 
         count = messages.count()
