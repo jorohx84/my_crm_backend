@@ -6,7 +6,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     fullname = serializers.SerializerMethodField()
     class Meta:
         model = UserProfile
-        fields = ["id", "fullname", "user", "first_name", "last_name", "email", "tel"]
+        fields = ["id", "fullname", "user", "first_name", "last_name", "email", "tel", "last_logout", "last_inbox_check"]
         
     def get_fullname(self, obj):
         return f"{obj.first_name} {obj.last_name}"

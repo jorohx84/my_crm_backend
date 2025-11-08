@@ -11,5 +11,6 @@ class SytemMessageSerializer(serializers.ModelSerializer):
             "recipient",
             "text",
             "created_at",
-            "url"
+            "url",
+            "is_read",
         ]

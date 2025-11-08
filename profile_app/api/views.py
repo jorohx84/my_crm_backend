@@ -18,3 +18,5 @@ class CheckEmailView(generics.ListAPIView):
         email = self.kwargs['email']
         profile = UserProfile.objects.filter(email=email)
         return profile
+
+

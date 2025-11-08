@@ -1,6 +1,12 @@
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.views import APIView 
 from .serializers import SytemMessageSerializer
 from ..models import SystemMessage
+from rest_framework.response import Response
+from django.utils.dateparse import parse_datetime
+
+
+
 
 class SytemMessageCreateView(generics.CreateAPIView):
     queryset = SystemMessage.objects.all()
@@ -15,3 +21,27 @@ class SystemMessageListView(generics.ListAPIView):
         user_id = self.kwargs['user_id']
         queryset = SystemMessage.objects.filter(recipient_id=user_id)
         return queryset
+
+
+class SystemMessageUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    queryset= SystemMessage.objects.all()
+    serializer_class = SytemMessageSerializer
+
+
+class NewMessagesCountView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        time = kwargs['timestamp']
+        user = request.user
+      
+      
+        if not time:
+            return Response({"detail": "Invalid timestamp format"}, status=status.HTTP_400_BAD_REQUEST)
+
+        messages = SystemMessage.objects.filter(recipient_id=user.id, created_at__gt=time)
+
+
+        count = messages.count()
+        return Response({
+            "count": count,
+        }, status=status.HTTP_200_OK)
