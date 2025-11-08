@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'profile_app',
     'customer_app',
     'task_app',
+    'message_app',
   
 ]
 

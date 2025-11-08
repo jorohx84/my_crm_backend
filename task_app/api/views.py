@@ -86,7 +86,7 @@ class TaskBoardAssigneeView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs.get('user_id')
-        tasks = Task.objects.filter(assignee_id=user_id)
+        tasks = Task.objects.filter(assignee_id=user_id).exclude(state__in=['closed'])
         return tasks
     
 class TaskBoardReviewerView(generics.ListAPIView):
@@ -94,7 +94,7 @@ class TaskBoardReviewerView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs['user_id']
-        tasks = Task.objects.filter(reviewer_id=user_id)
+        tasks = Task.objects.filter(reviewer_id=user_id).exclude(state__in=['closed'])
         return tasks
     
 

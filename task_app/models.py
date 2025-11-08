@@ -9,6 +9,8 @@ class Task(models.Model):
         ('in_progress', "In Progress"),
         ('under_review', "Under Review"),
         ('done', "Done"),
+        ('released', 'Released'),
+        ('closed', 'Closed')
 ]
 
     PRIO_TYPE = [
@@ -33,7 +35,6 @@ class Task(models.Model):
     type = models.CharField(default="task")
     checklist = models.JSONField(default=list, null=True, blank=True)
     board_position = models.IntegerField(default=0)
-
 
 
 # class Subtask(models.Model):

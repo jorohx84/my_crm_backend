@@ -99,6 +99,7 @@ class TaskUpdateSerializer(serializers.ModelSerializer):
             "log",
             "checklist",
             "board_position",
+           
         ]
 
 class CreateCommentSerializer(serializers.ModelSerializer):
@@ -142,6 +143,7 @@ class SingleTaskSerializer(serializers.ModelSerializer):
             "log",
             "type",
             "checklist",
+            
         ]
 
 
