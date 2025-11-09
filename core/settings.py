@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'customer_app',
     'task_app',
     'message_app',
+    'global_app'
   
 ]
 

@@ -22,8 +22,12 @@ class TaskListView(generics.ListAPIView):
 
     def get_queryset(self):
         customer_id=self.kwargs.get('customer_id')
-        
-        queryset = Task.objects.filter(customer_id=customer_id, type='task')
+        filter = self.kwargs.get('filter')
+        if filter== 'open':
+
+            queryset = Task.objects.filter(customer_id=customer_id, type='task').exclude(state__in=['released', 'closed'])
+        else: 
+            queryset = Task.objects.filter(customer_id=customer_id, type='task', state=filter)
         return queryset
     
 
@@ -103,5 +107,5 @@ class TaskBoardRealesesView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs['user_id']
-        tasks = Task.objects.filter(reviewer_id=user_id, state='done')
+        tasks = Task.objects.filter(reviewer_id=user_id, state='released')
         return tasks

@@ -3,7 +3,7 @@ from .views import CreateTaskView, TaskListView, SingleTaskView, CreateTaskComme
 
 urlpatterns = [
     path('tasks/', CreateTaskView.as_view(), name="task-create"),
-    path('tasks/<int:customer_id>/', TaskListView.as_view(), name="task-list"),
+    path('tasks/<int:customer_id>/<str:filter>/', TaskListView.as_view(), name="task-list"),
     path('task/<int:pk>/', SingleTaskView.as_view(), name="task-detail" ),
     path('comments/', CreateTaskCommentView.as_view(), name="comment-create"),
     path('comments/<int:pk>/', CommentUpdateView.as_view(), name="comment-detail"),

@@ -6,4 +6,5 @@ class SystemMessage(models.Model):
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     url = models.JSONField(default=list)
+    param = models.JSONField(default=dict)
     is_read = models.BooleanField(default=False)
