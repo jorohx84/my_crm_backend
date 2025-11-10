@@ -41,7 +41,17 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     'content-type',
 ]
 
+# Für WebSockets + Angular auf localhost
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:4200",
+    "http://127.0.0.1:4200",
+]
 
+# Optional: regex erlaubt Subdomains etc.
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^http://localhost:4200$",
+    r"^http://127\.0\.0\.1:4200$",
+]
 
 # Application definition
 
@@ -55,6 +65,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework',
     'corsheaders',
+    'channels',
     'auth_app',
     'profile_app',
     'customer_app',
@@ -99,6 +110,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
+ASGI_APPLICATION = 'core.asgi.application'
 
 
 # Database
@@ -159,3 +171,17 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],  # Lokaler Redis-Server
+        },
+    },
+}
+
+
+
+
+# daphne -p 8000 core.asgi:application

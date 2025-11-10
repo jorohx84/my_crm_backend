@@ -1,11 +1,13 @@
 from rest_framework import serializers
-from ..models import SystemMessage
+from ..models import Notification
 from profile_app.models import UserProfile
-class SytemMessageSerializer(serializers.ModelSerializer):
+
+
+class NotificationSerializer(serializers.ModelSerializer):
     recipient = serializers.PrimaryKeyRelatedField(queryset=UserProfile.objects.all())
 
     class Meta:
-        model = SystemMessage
+        model = Notification
         fields = [
             "id",
             "recipient",

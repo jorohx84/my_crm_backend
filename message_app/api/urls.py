@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import SytemMessageCreateView, SystemMessageListView, NewMessagesCountView, SystemMessageUpdateView
+from .views import NotificationCreateView, NotificationListView, NewMessagesCountView, NotificationUpdateView
 
 urlpatterns = [
-path('system-messages/', SytemMessageCreateView.as_view(), name="system-message"),
-path('system-messages/user/<int:user_id>/', SystemMessageListView.as_view(),name="system-message-list" ),
+path('notifications/', NotificationCreateView.as_view(), name="system-message"),
+path('notifications/user/<int:user_id>/', NotificationListView.as_view(),name="system-message-list" ),
 path('messages/count/', NewMessagesCountView.as_view(), name="messages-count"),
-path('system-messages/<int:pk>/', SystemMessageUpdateView.as_view(), name="system-message-detail"),
+path('notifications/<int:pk>/', NotificationUpdateView.as_view(), name="system-message-detail"),
 ]

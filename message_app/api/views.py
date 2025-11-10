@@ -1,31 +1,31 @@
 from rest_framework import generics, status
 from rest_framework.views import APIView 
-from .serializers import SytemMessageSerializer
-from ..models import SystemMessage
+from .serializers import NotificationSerializer
+from ..models import Notification
 from rest_framework.response import Response
 from django.utils.dateparse import parse_datetime
 
 
 
 
-class SytemMessageCreateView(generics.CreateAPIView):
-    queryset = SystemMessage.objects.all()
-    serializer_class = SytemMessageSerializer
+class NotificationCreateView(generics.CreateAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
 
 
 
-class SystemMessageListView(generics.ListAPIView):
-    serializer_class = SytemMessageSerializer
+class NotificationListView(generics.ListAPIView):
+    serializer_class = NotificationSerializer
 
     def get_queryset(self):
         user_id = self.kwargs['user_id']
-        queryset = SystemMessage.objects.filter(recipient_id=user_id)
+        queryset = Notification.objects.filter(recipient_id=user_id)
         return queryset
 
 
-class SystemMessageUpdateView(generics.RetrieveUpdateDestroyAPIView):
-    queryset= SystemMessage.objects.all()
-    serializer_class = SytemMessageSerializer
+class NotificationUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    queryset= Notification.objects.all()
+    serializer_class = NotificationSerializer
 
 
 class NewMessagesCountView(APIView):
@@ -34,7 +34,7 @@ class NewMessagesCountView(APIView):
         user = request.user
     
 
-        messages = SystemMessage.objects.filter(recipient_id=user.id, is_read=False)
+        messages = Notification.objects.filter(recipient_id=user.id, is_read=False)
 
 
         count = messages.count()
