@@ -14,12 +14,12 @@ class GlobalSearchView(APIView):
         
         user_results = UserProfile.objects.filter(Q(first_name__icontains=query) | Q(first_name__icontains=query) | Q(email__icontains=query)).values("id","first_name", "last_name", "email")
 
-        task_results = Task.objects.filter(Q(title__icontains=query) | Q(description__icontains=query)).values("id", "title", "description")
+        task_results = Task.objects.filter(Q(title__icontains=query) | Q(description__icontains=query)).values("id", "title", "description", "customer", "type")
 
-        customer_results = Customer.objects.filter(Q(companyname__icontains=query)).values("id", "companyname")
+        customer_results = Customer.objects.filter(Q(companyname__icontains=query)).values("id", "companyname", "phone", "email", "areacode", "city")
 
         return Response({
-            "users": list(user_results),
+            "members": list(user_results),
             "tasks": list(task_results),
             "customers": list (customer_results),
         })
