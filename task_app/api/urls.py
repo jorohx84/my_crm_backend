@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CreateTaskView, TaskListView, SingleTaskView, CreateTaskCommentView, CommentUpdateView, SubtaskListView, SubtaskCountView, TaskBoardAssigneeView, TaskBoardReviewerView, TaskBoardRealesesView
+from .views import CreateTaskView, TaskListView, SingleTaskView, CreateTaskCommentView, CommentUpdateView, SubtaskListView, SubtaskCountView, TaskBoardAssigneeView, TaskBoardReviewerView, TaskBoardRealesesView, CreateLogView, LogListView
 
 urlpatterns = [
     path('tasks/', CreateTaskView.as_view(), name="task-create"),
@@ -7,6 +7,8 @@ urlpatterns = [
     path('task/<int:pk>/', SingleTaskView.as_view(), name="task-detail" ),
     path('comments/', CreateTaskCommentView.as_view(), name="comment-create"),
     path('comments/<int:pk>/', CommentUpdateView.as_view(), name="comment-detail"),
+    path('task/logs/',  CreateLogView.as_view(), name="logs"),
+    path('task/logs/<int:task_id>', LogListView.as_view(), name="loglist"),
     # path('subtasks/', SubtaskCreatetView.as_view(), name="subtask-create"),
     path('subtasks/<int:parent_id>/', SubtaskListView.as_view(), name="subtask-list"),
     path('subtasks/count/<int:pk>/', SubtaskCountView.as_view(), name="subtask-count"),

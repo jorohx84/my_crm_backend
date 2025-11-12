@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Task, Comment
+from ..models import Task, Comment, Log
 from profile_app.models import UserProfile
 from customer_app.models import Customer
 
@@ -30,7 +30,7 @@ class CreateTaskSerializer(serializers.ModelSerializer):
            
             ]
         
-class ReviewerAssigneeSerializer(serializers.ModelSerializer):
+class UserProfileDetails(serializers.ModelSerializer):
     fullname=serializers.SerializerMethodField()
     class Meta:
         model = UserProfile
@@ -42,8 +42,8 @@ class ReviewerAssigneeSerializer(serializers.ModelSerializer):
 
  
 class TaskListSerializer(serializers.ModelSerializer):
-    reviewer = ReviewerAssigneeSerializer(read_only=True)
-    assignee = ReviewerAssigneeSerializer(read_only=True)
+    reviewer = UserProfileDetails(read_only=True)
+    assignee = UserProfileDetails(read_only=True)
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
@@ -112,7 +112,7 @@ class CreateCommentSerializer(serializers.ModelSerializer):
 
 
 class ListCommentSerializer(serializers.ModelSerializer):
-    creator = ReviewerAssigneeSerializer(read_only=True)
+    creator = UserProfileDetails(read_only=True)
 
     class Meta:
         model = Comment
@@ -120,8 +120,8 @@ class ListCommentSerializer(serializers.ModelSerializer):
         
 
 class SingleTaskSerializer(serializers.ModelSerializer):
-    reviewer = ReviewerAssigneeSerializer(read_only=True)
-    assignee = ReviewerAssigneeSerializer(read_only=True)
+    reviewer = UserProfileDetails(read_only=True)
+    assignee = UserProfileDetails(read_only=True)
     customer = TaskCustomerSerializer(read_only=True)
     comments = ListCommentSerializer( source="task_comment", many=True, read_only=True)
     parent = ParentSerializer(read_only=True)
@@ -148,26 +148,59 @@ class SingleTaskSerializer(serializers.ModelSerializer):
 
 
 
-class SubtaskListSerializer(serializers.ModelSerializer):
-    reviewer = ReviewerAssigneeSerializer(read_only=True)
-    assignee = ReviewerAssigneeSerializer(read_only=True)
-    task=serializers.PrimaryKeyRelatedField(read_only=True)
+# class SubtaskListSerializer(serializers.ModelSerializer):
+#     reviewer = ReviewerAssigneeSerializer(read_only=True)
+#     assignee = ReviewerAssigneeSerializer(read_only=True)
+#     task=serializers.PrimaryKeyRelatedField(read_only=True)
 
+#     class Meta:
+#         model = Task
+#         fields = [
+#             "id",
+#             "task",
+#             "title",
+#             "description",
+#             "customer",
+#             "assignee",
+#             "state",
+#             "priority",
+#             "created_at",
+#             "due_date",
+#             "reviewer",
+#             "type",
+#         ]
+
+
+class LogCreateSerializer(serializers.ModelSerializer):
+    task = serializers.PrimaryKeyRelatedField(read_only=True)
+    updated_by = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
-        model = Task
+        model = Log
         fields = [
             "id",
+            "log",
             "task",
-            "title",
-            "description",
-            "customer",
-            "assignee",
-            "state",
-            "priority",
-            "created_at",
-            "due_date",
-            "reviewer",
-            "type",
+            "logged_at",
+            "updated_by",
+            "new_state",
+            "field",
         ]
+        
 
 
+class LogListSerializer(serializers.ModelSerializer):
+    task = serializers.PrimaryKeyRelatedField(read_only=True)
+    updated_by = UserProfileDetails(read_only=True)
+
+    class Meta:
+        model = Log
+        fields = [
+            "id",
+            "log",
+            "task",
+            "logged_at",
+            "updated_by",
+            "new_state",
+            "field",
+        ]
+       

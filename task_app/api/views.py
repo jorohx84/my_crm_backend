@@ -1,10 +1,11 @@
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import CreateTaskSerializer, TaskListSerializer, SingleTaskSerializer, CreateCommentSerializer, ListCommentSerializer, TaskUpdateSerializer
-from ..models import Task, Comment
+from .serializers import CreateTaskSerializer, TaskListSerializer, SingleTaskSerializer, CreateCommentSerializer, ListCommentSerializer, TaskUpdateSerializer, LogCreateSerializer, LogListSerializer
+from ..models import Task, Comment, Log
 from profile_app.models import UserProfile
 from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import ValidationError
 class CreateTaskView(generics.CreateAPIView):
     queryset=Task.objects.all()
     serializer_class=CreateTaskSerializer
@@ -109,3 +110,24 @@ class TaskBoardRealesesView(generics.ListAPIView):
         user_id = self.kwargs['user_id']
         tasks = Task.objects.filter(reviewer_id=user_id, state='released')
         return tasks
+    
+class CreateLogView(generics.CreateAPIView):
+    queryset=Log.objects.all()
+    serializer_class = LogCreateSerializer
+
+    def perform_create(self, serializer):  
+        task_id = self.request.data['task']
+        serializer.save(
+            updated_by = self.request.user.userprofile,
+            task_id = task_id 
+        )
+
+class LogListView(generics.ListAPIView):
+    serializer_class = LogListSerializer
+    
+    def get_queryset(self):
+        task_id = self.kwargs['task_id']
+        logs = Log.objects.filter(task_id=task_id)
+        return logs
+
+    
