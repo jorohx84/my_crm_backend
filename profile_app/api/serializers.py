@@ -10,3 +10,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
         
     def get_fullname(self, obj):
         return f"{obj.first_name} {obj.last_name}"
+    
+
+class UserProfileDetailsSerializer(serializers.ModelSerializer):
+    fullname=serializers.SerializerMethodField()
+    class Meta:
+        model = UserProfile
+        fields = ["id", "fullname", "email"]
+        read_only_fields = ["first_name", "last_name"] 
+
+    def get_fullname(self, obj):
+        return f"{obj.first_name} {obj.last_name}"

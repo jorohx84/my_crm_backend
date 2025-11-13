@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/', include('customer_app.api.urls')),
     path('api/', include('task_app.api.urls')),
     path('api/', include('message_app.api.urls')),
-     path('api/', include('global_app.api.urls')),
+    path('api/', include('global_app.api.urls')),
+    path('api/', include('contact_app.api.urls')),
 
 ]

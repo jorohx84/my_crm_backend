@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from ..models import Task, Comment, Log
 from profile_app.models import UserProfile
+from profile_app.api.serializers import UserProfileDetailsSerializer
 from customer_app.models import Customer
 
 class CreateTaskSerializer(serializers.ModelSerializer):
@@ -30,20 +31,20 @@ class CreateTaskSerializer(serializers.ModelSerializer):
            
             ]
         
-class UserProfileDetails(serializers.ModelSerializer):
-    fullname=serializers.SerializerMethodField()
-    class Meta:
-        model = UserProfile
-        fields = ["id", "fullname", "email"]
-        read_only_fields = ["first_name", "last_name"] 
+# class UserProfileDetailsSerializer(serializers.ModelSerializer):
+#     fullname=serializers.SerializerMethodField()
+#     class Meta:
+#         model = UserProfile
+#         fields = ["id", "fullname", "email"]
+#         read_only_fields = ["first_name", "last_name"] 
 
-    def get_fullname(self, obj):
-        return f"{obj.first_name} {obj.last_name}"
+#     def get_fullname(self, obj):
+#         return f"{obj.first_name} {obj.last_name}"
 
  
 class TaskListSerializer(serializers.ModelSerializer):
-    reviewer = UserProfileDetails(read_only=True)
-    assignee = UserProfileDetails(read_only=True)
+    reviewer = UserProfileDetailsSerializer(read_only=True)
+    assignee = UserProfileDetailsSerializer(read_only=True)
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
@@ -112,7 +113,7 @@ class CreateCommentSerializer(serializers.ModelSerializer):
 
 
 class ListCommentSerializer(serializers.ModelSerializer):
-    creator = UserProfileDetails(read_only=True)
+    creator = UserProfileDetailsSerializer(read_only=True)
 
     class Meta:
         model = Comment
@@ -120,8 +121,8 @@ class ListCommentSerializer(serializers.ModelSerializer):
         
 
 class SingleTaskSerializer(serializers.ModelSerializer):
-    reviewer = UserProfileDetails(read_only=True)
-    assignee = UserProfileDetails(read_only=True)
+    reviewer = UserProfileDetailsSerializer(read_only=True)
+    assignee = UserProfileDetailsSerializer(read_only=True)
     customer = TaskCustomerSerializer(read_only=True)
     comments = ListCommentSerializer( source="task_comment", many=True, read_only=True)
     parent = ParentSerializer(read_only=True)
@@ -183,14 +184,14 @@ class LogCreateSerializer(serializers.ModelSerializer):
             "logged_at",
             "updated_by",
             "new_state",
-            "field",
+           
         ]
         
 
 
 class LogListSerializer(serializers.ModelSerializer):
     task = serializers.PrimaryKeyRelatedField(read_only=True)
-    updated_by = UserProfileDetails(read_only=True)
+    updated_by = UserProfileDetailsSerializer(read_only=True)
 
     class Meta:
         model = Log
@@ -201,6 +202,6 @@ class LogListSerializer(serializers.ModelSerializer):
             "logged_at",
             "updated_by",
             "new_state",
-            "field",
+         
         ]
        

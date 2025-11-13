@@ -1,7 +1,7 @@
 from django.db import models
 from profile_app.models import UserProfile
 from customer_app.models import Customer
-
+from simple_history.models import HistoricalRecords
 
 class Task(models.Model):
     STATE_TYPE = [
@@ -35,7 +35,7 @@ class Task(models.Model):
     type = models.CharField(default="task")
     checklist = models.JSONField(default=list, null=True, blank=True)
     board_position = models.IntegerField(default=0)
-
+    history = HistoricalRecords()
 
 
 class Comment(models.Model):
