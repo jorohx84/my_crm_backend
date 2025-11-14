@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'message_app',
     'global_app',
     'contact_app',
+    'activity_app',
   
 ]
 

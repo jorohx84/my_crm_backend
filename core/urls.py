@@ -26,5 +26,6 @@ urlpatterns = [
     path('api/', include('message_app.api.urls')),
     path('api/', include('global_app.api.urls')),
     path('api/', include('contact_app.api.urls')),
+    path('api/', include('activity_app.api.urls')),
 
 ]

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from ..models import Contact
 from profile_app.api.serializers import UserProfileDetailsSerializer
 
-class CreateContactSerializer(serializers.ModelSerializer):
+class ListCreateContactSerializer(serializers.ModelSerializer):
     customer = serializers.PrimaryKeyRelatedField(read_only=True)
     created_by =serializers.PrimaryKeyRelatedField(read_only=True)
     
@@ -22,9 +22,10 @@ class CreateContactSerializer(serializers.ModelSerializer):
 
 
 class ContactDetailSerializer(serializers.ModelSerializer):
-    customer = serializers.PrimaryKeyRelatedField(read_only=True)
+    # customer = serializers.PrimaryKeyRelatedField(read_only=True)
     created_by = UserProfileDetailsSerializer(read_only=True)
-    
+    updated_by = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = Contact
         fields =[
@@ -38,4 +39,7 @@ class ContactDetailSerializer(serializers.ModelSerializer):
             "email",
             "created_by",
             "newsletter_opt_in",
+            "notes",
+            "updated_at",
+            "updated_by",
         ]
