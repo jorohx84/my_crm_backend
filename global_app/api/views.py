@@ -19,7 +19,7 @@ class GlobalSearchView(APIView):
 
         customer_results = Customer.objects.filter(Q(companyname__icontains=query)).values("id", "companyname", "phone", "email", "areacode", "city")
 
-        contact_results = Contact.objects.filter(Q(name__icontains=query) | (Q(email__icontains=query))).values("id", "name", "email", "phone", "department")
+        contact_results = Contact.objects.filter(Q(name__icontains=query) | (Q(email__icontains=query))).values("id", "name", "email", "phone", "department", "customer")
 
         return Response({
             "members": list(user_results),
