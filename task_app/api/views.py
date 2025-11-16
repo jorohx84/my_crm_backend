@@ -1,8 +1,8 @@
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import CreateTaskSerializer, TaskListSerializer, SingleTaskSerializer, CreateCommentSerializer, ListCommentSerializer, TaskUpdateSerializer, LogCreateSerializer, LogListSerializer
-from ..models import Task, Comment, Log
+from .serializers import CreateTaskSerializer, TaskListSerializer, SingleTaskSerializer, CreateCommentSerializer, ListCommentSerializer, TaskUpdateSerializer, LogCreateSerializer, LogListSerializer, CreateTaskTemplateSerializer
+from ..models import Task, Comment, Log, Tasktemplate
 from profile_app.models import UserProfile
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
@@ -130,4 +130,6 @@ class LogListView(generics.ListAPIView):
         logs = Log.objects.filter(task_id=task_id)
         return logs
 
-    
+class CreateTaskTemplateView(generics.ListCreateAPIView):
+    queryset = Tasktemplate.objects.all()
+    serializer_class = CreateTaskTemplateSerializer

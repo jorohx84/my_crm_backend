@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Task, Comment, Log
+from ..models import Task, Comment, Log, Tasktemplate
 from profile_app.models import UserProfile
 from profile_app.api.serializers import UserProfileDetailsSerializer
 from customer_app.models import Customer
@@ -23,6 +23,7 @@ class CreateTaskSerializer(serializers.ModelSerializer):
             "reviewer",
             "log",
             "type",
+            "checklist",
         ]
         read_only_fields = [
             "id", 
@@ -204,4 +205,13 @@ class LogListSerializer(serializers.ModelSerializer):
             "new_state",
          
         ]
-       
+
+class CreateTaskTemplateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tasktemplate
+        fields =[
+            "id",
+            "title",
+            "description",
+            "checklist",
+        ]

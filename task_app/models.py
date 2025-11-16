@@ -51,3 +51,8 @@ class Log(models.Model):
     logged_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="customer_log")
     new_state = models.CharField()
+
+class Tasktemplate(models.Model):
+    title = models.CharField()
+    description = models.TextField()
+    checklist = models.JSONField(default=list, null=True, blank=True)

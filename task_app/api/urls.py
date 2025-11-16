@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CreateTaskView, TaskListView, SingleTaskView, CreateTaskCommentView, CommentUpdateView, SubtaskListView, SubtaskCountView, TaskBoardAssigneeView, TaskBoardReviewerView, TaskBoardRealesesView, CreateLogView, LogListView
+from .views import CreateTaskView, TaskListView, SingleTaskView, CreateTaskCommentView, CommentUpdateView, CreateTaskTemplateView, TaskBoardAssigneeView, TaskBoardReviewerView, TaskBoardRealesesView, CreateLogView, LogListView
 
 urlpatterns = [
     path('tasks/', CreateTaskView.as_view(), name="task-create"),
@@ -10,9 +10,10 @@ urlpatterns = [
     path('task/logs/',  CreateLogView.as_view(), name="logs"),
     path('task/logs/<int:task_id>', LogListView.as_view(), name="loglist"),
     # path('subtasks/', SubtaskCreatetView.as_view(), name="subtask-create"),
-    path('subtasks/<int:parent_id>/', SubtaskListView.as_view(), name="subtask-list"),
-    path('subtasks/count/<int:pk>/', SubtaskCountView.as_view(), name="subtask-count"),
+    # path('subtasks/<int:parent_id>/', SubtaskListView.as_view(), name="subtask-list"),
+    # path('subtasks/count/<int:pk>/', SubtaskCountView.as_view(), name="subtask-count"),
     path('board/<int:user_id>/assigned/', TaskBoardAssigneeView.as_view(), name="board-assignee"),
     path('board/<int:user_id>/reviewed/', TaskBoardReviewerView.as_view(), name="board-reviewer"),
     path('board/<int:user_id>/releases/', TaskBoardRealesesView.as_view(), name="board-releases"),
+    path('task/template/', CreateTaskTemplateView.as_view(), name="template-create" )
 ]
