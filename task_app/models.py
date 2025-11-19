@@ -32,7 +32,6 @@ class Task(models.Model):
     reviewer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='review_tasks')
     completed_at = models.DateTimeField(null=True, blank=True)
     log = models.JSONField(default=list, blank=True)
-    type = models.CharField(default="task")
     checklist = models.JSONField(default=list, null=True, blank=True)
     board_position = models.IntegerField(default=0)
     history = HistoricalRecords()

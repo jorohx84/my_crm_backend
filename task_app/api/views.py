@@ -26,9 +26,9 @@ class TaskListView(generics.ListAPIView):
         filter = self.kwargs.get('filter')
         if filter== 'open':
 
-            queryset = Task.objects.filter(customer_id=customer_id, type='task').exclude(state__in=['released', 'closed'])
+            queryset = Task.objects.filter(customer_id=customer_id).exclude(state__in=['released', 'closed'])
         else: 
-            queryset = Task.objects.filter(customer_id=customer_id, type='task', state=filter)
+            queryset = Task.objects.filter(customer_id=customer_id, state=filter)
         return queryset
     
 
@@ -60,30 +60,6 @@ class CommentUpdateView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=ListCommentSerializer
 
 
-class SubtaskListView(generics.ListAPIView):
-    serializer_class=TaskListSerializer
-
-    def get_queryset(self):
-        parent_id = self.kwargs['parent_id']
-        queryset = Task.objects.filter(parent_id=parent_id, type="subtask")
-        return queryset
-
-class SubtaskCountView(APIView):
-    def get(self, request, pk):
-        try:
-            task = Task.objects.get(pk=pk)
-        except Task.DoesNotExist:
-            return Response({'error': 'No Task Found'}, status=status.HTTP_404_NOT_FOUND)
-
-        subtasks = task.subtasks
-        total_count = subtasks.count()
-        completed_subtasks = subtasks.filter(state='done')
-        completed_count = completed_subtasks.count()
-
-        return Response({
-            "total_count": total_count,
-            "completed_count":completed_count 
-             })
           
 
 class TaskBoardAssigneeView(generics.ListAPIView):
@@ -131,5 +107,9 @@ class LogListView(generics.ListAPIView):
         return logs
 
 class CreateTaskTemplateView(generics.ListCreateAPIView):
+    queryset = Tasktemplate.objects.all()
+    serializer_class = CreateTaskTemplateSerializer
+
+class TaskTemplateUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Tasktemplate.objects.all()
     serializer_class = CreateTaskTemplateSerializer

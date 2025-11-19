@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CreateTaskView, TaskListView, SingleTaskView, CreateTaskCommentView, CommentUpdateView, CreateTaskTemplateView, TaskBoardAssigneeView, TaskBoardReviewerView, TaskBoardRealesesView, CreateLogView, LogListView
+from .views import CreateTaskView, TaskListView, SingleTaskView, CreateTaskCommentView, CommentUpdateView, CreateTaskTemplateView, TaskBoardAssigneeView, TaskBoardReviewerView, TaskBoardRealesesView, CreateLogView, LogListView, TaskTemplateUpdateDeleteView
 
 urlpatterns = [
     path('tasks/', CreateTaskView.as_view(), name="task-create"),
@@ -15,5 +15,6 @@ urlpatterns = [
     path('board/<int:user_id>/assigned/', TaskBoardAssigneeView.as_view(), name="board-assignee"),
     path('board/<int:user_id>/reviewed/', TaskBoardReviewerView.as_view(), name="board-reviewer"),
     path('board/<int:user_id>/releases/', TaskBoardRealesesView.as_view(), name="board-releases"),
-    path('task/template/', CreateTaskTemplateView.as_view(), name="template-create" )
+    path('task/template/', CreateTaskTemplateView.as_view(), name="template-create" ),
+    path('task/template/<int:pk>/', TaskTemplateUpdateDeleteView.as_view(), name="single-template" )
 ]

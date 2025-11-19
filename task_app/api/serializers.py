@@ -22,7 +22,6 @@ class CreateTaskSerializer(serializers.ModelSerializer):
             "due_date",
             "reviewer",
             "log",
-            "type",
             "checklist",
         ]
         read_only_fields = [
@@ -31,16 +30,6 @@ class CreateTaskSerializer(serializers.ModelSerializer):
             "reviewer",
            
             ]
-        
-# class UserProfileDetailsSerializer(serializers.ModelSerializer):
-#     fullname=serializers.SerializerMethodField()
-#     class Meta:
-#         model = UserProfile
-#         fields = ["id", "fullname", "email"]
-#         read_only_fields = ["first_name", "last_name"] 
-
-#     def get_fullname(self, obj):
-#         return f"{obj.first_name} {obj.last_name}"
 
  
 class TaskListSerializer(serializers.ModelSerializer):
@@ -62,7 +51,6 @@ class TaskListSerializer(serializers.ModelSerializer):
             "created_at",
             "due_date",
             "reviewer",
-            "type",
             "checklist",
             "board_position",
         ]
@@ -143,34 +131,10 @@ class SingleTaskSerializer(serializers.ModelSerializer):
             "reviewer",
             "comments",
             "log",
-            "type",
             "checklist",
             
         ]
 
-
-
-# class SubtaskListSerializer(serializers.ModelSerializer):
-#     reviewer = ReviewerAssigneeSerializer(read_only=True)
-#     assignee = ReviewerAssigneeSerializer(read_only=True)
-#     task=serializers.PrimaryKeyRelatedField(read_only=True)
-
-#     class Meta:
-#         model = Task
-#         fields = [
-#             "id",
-#             "task",
-#             "title",
-#             "description",
-#             "customer",
-#             "assignee",
-#             "state",
-#             "priority",
-#             "created_at",
-#             "due_date",
-#             "reviewer",
-#             "type",
-#         ]
 
 
 class LogCreateSerializer(serializers.ModelSerializer):
