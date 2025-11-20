@@ -1,7 +1,9 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
 from profile_app.models import UserProfile
+
+User = get_user_model()
 
 class ResgistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
@@ -22,7 +24,9 @@ class ResgistrationSerializer(serializers.ModelSerializer):
         password = validated_data.pop('password')
         validated_data.pop('repeated_password')
         username = validated_data.get('email')
-        user = User.objects.create(username=username, **validated_data)
+        request_user = self.context['request'].user
+        tenant = request_user.tenant
+        user = User.objects.create(username=username, tenant=tenant, **validated_data)
         user.set_password(password)
         user.save()
 
@@ -31,7 +35,7 @@ class ResgistrationSerializer(serializers.ModelSerializer):
             email = user.email,
             first_name = user.first_name,
             last_name = user.last_name,
-            tel = '',
+            phone = '',
         )
         return user
     

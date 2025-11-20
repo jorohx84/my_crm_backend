@@ -13,13 +13,15 @@ class GlobalSearchView(APIView):
         if not query:
             return Response({"detail": "No query provided"}, status=status.HTTP_400_BAD_REQUEST)
         
-        user_results = UserProfile.objects.filter(Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(email__icontains=query)).values("id","first_name", "last_name", "email")
+        tenant = request.user.tenant
 
-        task_results = Task.objects.filter(Q(title__icontains=query) | Q(description__icontains=query)).values("id", "title", "description", "customer", "type")
+        user_results = UserProfile.objects.filter(user__tenant=tenant).filter(Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(email__icontains=query)).values("id","first_name", "last_name", "email")
 
-        customer_results = Customer.objects.filter(Q(companyname__icontains=query)).values("id", "companyname", "phone", "email", "areacode", "city")
+        task_results = Task.objects.filter(customer__tenant=tenant).filter(Q(title__icontains=query) | Q(description__icontains=query)).values("id", "title", "description", "customer")
 
-        contact_results = Contact.objects.filter(Q(name__icontains=query) | (Q(email__icontains=query))).values("id", "name", "email", "phone", "department", "customer")
+        customer_results = Customer.objects.filter(tenant=tenant).filter(Q(companyname__icontains=query)).values("id", "companyname", "phone", "email", "areacode", "city")
+
+        contact_results = Contact.objects.filter(customer__tenant=tenant).filter(Q(name__icontains=query) | (Q(email__icontains=query))).values("id", "name", "email", "phone", "department", "customer")
 
         return Response({
             "members": list(user_results),

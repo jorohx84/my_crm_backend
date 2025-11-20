@@ -3,6 +3,7 @@ from ..models import Task, Comment, Log, Tasktemplate
 from profile_app.models import UserProfile
 from profile_app.api.serializers import UserProfileDetailsSerializer
 from customer_app.models import Customer
+from customer_app.api.serializers import CustomerDetailSerializer
 
 class CreateTaskSerializer(serializers.ModelSerializer):
     reviewer = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -22,7 +23,7 @@ class CreateTaskSerializer(serializers.ModelSerializer):
             "due_date",
             "reviewer",
             "log",
-            "checklist",
+            "subtasks",
         ]
         read_only_fields = [
             "id", 
@@ -36,7 +37,7 @@ class TaskListSerializer(serializers.ModelSerializer):
     reviewer = UserProfileDetailsSerializer(read_only=True)
     assignee = UserProfileDetailsSerializer(read_only=True)
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
-
+    customer = CustomerDetailSerializer(read_only=True)
     class Meta:
         model = Task
         fields = [
@@ -51,7 +52,7 @@ class TaskListSerializer(serializers.ModelSerializer):
             "created_at",
             "due_date",
             "reviewer",
-            "checklist",
+            "subtasks",
             "board_position",
         ]
 
@@ -87,7 +88,7 @@ class TaskUpdateSerializer(serializers.ModelSerializer):
             "due_date",
             "reviewer",
             "log",
-            "checklist",
+            "subtasks",
             "board_position",
            
         ]
@@ -131,7 +132,7 @@ class SingleTaskSerializer(serializers.ModelSerializer):
             "reviewer",
             "comments",
             "log",
-            "checklist",
+            "subtasks",
             
         ]
 
@@ -177,5 +178,5 @@ class CreateTaskTemplateSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "description",
-            "checklist",
+            "subtasks",
         ]

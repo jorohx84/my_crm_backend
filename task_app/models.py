@@ -18,7 +18,7 @@ class Task(models.Model):
         ('mid', "Mid"),
         ('high', "High"),
     ]
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="subtasks")
+   
     title = models.CharField(max_length=255)
     description = models.TextField()
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="customer_tasks")
@@ -32,7 +32,7 @@ class Task(models.Model):
     reviewer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='review_tasks')
     completed_at = models.DateTimeField(null=True, blank=True)
     log = models.JSONField(default=list, blank=True)
-    checklist = models.JSONField(default=list, null=True, blank=True)
+    subtasks = models.JSONField(default=list, null=True, blank=True)
     board_position = models.IntegerField(default=0)
     history = HistoricalRecords()
 
@@ -54,4 +54,4 @@ class Log(models.Model):
 class Tasktemplate(models.Model):
     title = models.CharField()
     description = models.TextField()
-    checklist = models.JSONField(default=list, null=True, blank=True)
+    subtasks = models.JSONField(default=list, null=True, blank=True)

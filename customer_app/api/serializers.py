@@ -1,13 +1,17 @@
 from rest_framework import serializers
 from..models import Customer
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class CustomerSerializer(serializers.ModelSerializer):
     created_by = serializers.PrimaryKeyRelatedField(read_only=True)
+    tenant = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Customer
         fields = ["id", 
+                  "tenant",
                   "companyname", 
                   "street", 
                   "areacode", 
@@ -20,6 +24,8 @@ class CustomerSerializer(serializers.ModelSerializer):
                   "created_by"
                   
                   ]
+        
+
         
 
 class SingleCustomerSerializer(serializers.ModelSerializer):
@@ -67,4 +73,11 @@ class SingleCustomerSerializer(serializers.ModelSerializer):
         if obj.updated_by:
             return f"{obj.updated_by.first_name} {obj.updated_by.last_name}"
         
-    
+
+class CustomerDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = [
+            "id",
+            "companyname"
+        ]

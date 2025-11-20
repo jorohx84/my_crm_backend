@@ -25,6 +25,8 @@ SECRET_KEY = 'django-insecure-bson7gfe=mu(26kwys3n7462d_%+d)j#1ok&ssj5ferui=1f%+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+AUTH_USER_MODEL = "auth_app.User"
+
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -68,6 +70,7 @@ INSTALLED_APPS = [
     'simple_history',
     'channels',
     'auth_app',
+    'account_app',
     'profile_app',
     'customer_app',
     'task_app',

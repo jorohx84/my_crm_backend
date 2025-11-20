@@ -11,10 +11,8 @@ class CreateTaskView(generics.CreateAPIView):
     serializer_class=CreateTaskSerializer
  
     def perform_create(self, serializer):
-        parent_id = self.request.data.get('parent')
         serializer.save(
             reviewer=self.request.user.userprofile,
-            parent_id=parent_id
             )
 
 

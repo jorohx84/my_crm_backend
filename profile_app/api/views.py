@@ -8,13 +8,25 @@ from .serializers import UserProfileSerializer
 from ..models import UserProfile
 
 class ProfileListView(generics.ListAPIView):
-    queryset = UserProfile.objects.all()
+    # queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+
+    def get_queryset(self):
+        tenant_id=self.request.user.tenant
+        profiles = UserProfile.objects.filter(user__tenant=tenant_id, user__is_staff=False)
+        return profiles
 
 
 class SingleProfileView(generics.RetrieveUpdateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+    lookup_field = 'user_id'  # Wichtig für RetrieveUpdateAPIView
+
+    def get(self, request, *args, **kwargs):
+        profile = self.get_object()  # nutzt lookup_field automatisch
+        serializer = self.get_serializer(profile)
+        return Response(serializer.data)
+
 
 class CheckEmailView(generics.ListAPIView):
     serializer_class = UserProfileSerializer
