@@ -33,7 +33,8 @@ class CheckEmailView(generics.ListAPIView):
 
     def get_queryset(self):
         email = self.kwargs['email']
-        profile = UserProfile.objects.filter(email=email)
+        tenant_id=self.request.user.tenant.id
+        profile = UserProfile.objects.filter(email=email, user__tenant_id=tenant_id)
         return profile
 
 

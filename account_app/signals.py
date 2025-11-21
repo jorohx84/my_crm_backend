@@ -1,3 +1,4 @@
+import django_rq
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
@@ -6,6 +7,8 @@ from .models import Account
 from django.contrib.auth.hashers import make_password
 from django.utils.crypto import get_random_string
 from rest_framework.authtoken.models import Token
+from .utils import send_set_password_email
+
 User = get_user_model()
 
 @receiver(post_save, sender=Account)
@@ -39,3 +42,6 @@ def create_account_admin(sender, instance, created, **kwargs):
         print("Neuer Tenant-Admin:", email)
         print("Passwort:", raw_password)
         print("Token:", token.key)
+
+        queue = django_rq.get_queue("default")
+        queue.enqueue(send_set_password_email, user.pk)
