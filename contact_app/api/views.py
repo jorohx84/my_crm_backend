@@ -17,7 +17,7 @@ class ContactCreateView(generics.CreateAPIView):
         else:
             serializer.save(
                 customer_id = customer_id,
-                created_by = user.userprofile
+                created_by = user
                 ), 
       
 
@@ -37,5 +37,5 @@ class ContactDetailView(generics.RetrieveUpdateDestroyAPIView):
     def perform_update(self, serializer):
         user = self.request.user
         serializer.save(
-            updated_by = user.userprofile
+            updated_by = user
         )

@@ -15,7 +15,7 @@ class GlobalSearchView(APIView):
         
         tenant = request.user.tenant
 
-        user_results = UserProfile.objects.filter(user__tenant=tenant).filter(Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(email__icontains=query)).values("id","first_name", "last_name", "email")
+        user_results = UserProfile.objects.filter(user__tenant=tenant).filter(Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(email__icontains=query)).values("id","first_name", "last_name", "email", "user")
 
         task_results = Task.objects.filter(customer__tenant=tenant).filter(Q(title__icontains=query) | Q(description__icontains=query)).values("id", "title", "description", "customer")
 

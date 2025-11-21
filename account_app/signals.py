@@ -31,13 +31,13 @@ def create_account_admin(sender, instance, created, **kwargs):
         user.save()
 
 
-        UserProfile.objects.create(
-            user=user,
-            email=user.email,
-            first_name=user.first_name,
-            last_name=user.last_name,
-            phone=instance.phone
-        )
+        # UserProfile.objects.create(
+        #     user=user,
+        #     email=user.email,
+        #     first_name=user.first_name,
+        #     last_name=user.last_name,
+        #     phone=instance.phone
+        # )
         token, created = Token.objects.get_or_create(user=user)
         print("Neuer Tenant-Admin:", email)
         print("Passwort:", raw_password)

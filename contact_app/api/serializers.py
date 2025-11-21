@@ -23,7 +23,7 @@ class ListCreateContactSerializer(serializers.ModelSerializer):
 
 class ContactDetailSerializer(serializers.ModelSerializer):
     # customer = serializers.PrimaryKeyRelatedField(read_only=True)
-    created_by = UserProfileDetailsSerializer(read_only=True)
+    created_by =serializers.SerializerMethodField()
     updated_by = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
@@ -43,3 +43,6 @@ class ContactDetailSerializer(serializers.ModelSerializer):
             "updated_at",
             "updated_by",
         ]
+
+    def get_created_by(self, obj):
+        return UserProfileDetailsSerializer(obj.created_by.userprofile).data

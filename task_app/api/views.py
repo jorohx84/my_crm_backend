@@ -12,7 +12,7 @@ class CreateTaskView(generics.CreateAPIView):
  
     def perform_create(self, serializer):
         serializer.save(
-            reviewer=self.request.user.userprofile,
+            reviewer=self.request.user,
             )
 
 
@@ -92,7 +92,7 @@ class CreateLogView(generics.CreateAPIView):
     def perform_create(self, serializer):  
         task_id = self.request.data['task']
         serializer.save(
-            updated_by = self.request.user.userprofile,
+            updated_by = self.request.user,
             task_id = task_id 
         )
 

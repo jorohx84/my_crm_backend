@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from .serializers import UserProfileSerializer
 from ..models import UserProfile
 
+
 class ProfileListView(generics.ListAPIView):
     # queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
@@ -39,11 +40,11 @@ class CheckEmailView(generics.ListAPIView):
 
 
 class ProfileSearchView(APIView):
- def get(self, reuquest, input):
+ def get(self, request, input):
     query = input
     if not query:
         return Response({"detail": "No query provided"}, status=status.HTTP_400_BAD_REQUEST)
-    
-    search_result = UserProfile.objects.filter(Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(email__icontains=query)).annotate(fullname=Concat("first_name", Value(' '), 'last_name')).values("id", "fullname", "email")
+    tenant_id = self.request.user.tenant
+    search_result = UserProfile.objects.filter(user__tenant=tenant_id).filter(Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(email__icontains=query)).annotate(fullname=Concat("first_name", Value(' '), 'last_name')).values("id", "fullname", "email", "user")
 
     return Response(list(search_result))
