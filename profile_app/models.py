@@ -11,6 +11,7 @@ class UserProfile(models.Model):
     department = models.CharField(default="", null=True, blank=True)
     last_logout = models.CharField(default='1900-01-01T00:00:00.000Z')
     last_inbox_check = models.CharField(default='1900-01-01T00:00:00.000Z')
-
+    
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    

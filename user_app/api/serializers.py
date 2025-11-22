@@ -12,6 +12,7 @@ class UserSerailizer(serializers.ModelSerializer):
         model = User
         fields = [
             "id",
-            "profile"
+            "profile",
+            "is_staff"
         ]
 

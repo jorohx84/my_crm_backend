@@ -19,10 +19,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
     
 class UserProfileDetailsSerializer(serializers.ModelSerializer):
     fullname=serializers.SerializerMethodField()
+    initials = serializers.SerializerMethodField()
+    
     class Meta:
         model = UserProfile
-        fields = ["id","fullname", "email", "phone", "department"]
+        fields = ["id","fullname", "email", "phone", "department", "initials"]
         read_only_fields = ["first_name", "last_name"] 
 
     def get_fullname(self, obj):
         return f"{obj.first_name} {obj.last_name}"
+
+    def get_initials(self, obj):
+        return (obj.first_name[:1] + obj.last_name[:1]).upper()
