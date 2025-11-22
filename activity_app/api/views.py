@@ -12,7 +12,7 @@ class CreateActivityView(generics.CreateAPIView):
         contact_id = self.request.data['contact']
 
         serializer.save(
-            user_id = user.userprofile.id,
+            user_id = user.id,
             customer_id = customer_id,
             contact_id = contact_id
         )

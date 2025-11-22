@@ -30,9 +30,11 @@ class ResgistrationSerializer(serializers.ModelSerializer):
         user = User.objects.create(
             username=username,
             tenant=tenant,
-            **validated_data
+            phone=phone,
+            **validated_data,
+         
         )
-        user.phone = phone
+        
         user.set_password(raw_password)
         user.save()
 

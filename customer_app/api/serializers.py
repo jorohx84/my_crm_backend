@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from..models import Customer
 from django.contrib.auth import get_user_model
-
+from user_app.api.serializers import UserSerailizer
 User = get_user_model()
 
 class CustomerSerializer(serializers.ModelSerializer):

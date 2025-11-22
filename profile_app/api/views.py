@@ -29,14 +29,14 @@ class SingleProfileView(generics.RetrieveUpdateAPIView):
         return Response(serializer.data)
 
 
-class CheckEmailView(generics.ListAPIView):
-    serializer_class = UserProfileSerializer
+# class CheckEmailView(generics.ListAPIView):
+#     serializer_class = UserProfileSerializer
 
-    def get_queryset(self):
-        email = self.kwargs['email']
-        tenant_id=self.request.user.tenant.id
-        profile = UserProfile.objects.filter(email=email, user__tenant_id=tenant_id)
-        return profile
+#     def get_queryset(self):
+#         email = self.kwargs['email']
+#         tenant_id=self.request.user.tenant.id
+#         profile = UserProfile.objects.filter(email=email, user__tenant_id=tenant_id)
+#         return profile
 
 
 class ProfileSearchView(APIView):

@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'django_rq',
     'channels',
     'auth_app',
+    'user_app',
     'account_app',
     'profile_app',
     'customer_app',

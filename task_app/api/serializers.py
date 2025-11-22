@@ -1,10 +1,8 @@
 from rest_framework import serializers
 from ..models import Task, Comment, Log, Tasktemplate
-from profile_app.models import UserProfile
-from profile_app.api.serializers import UserProfileDetailsSerializer
 from customer_app.models import Customer
 from customer_app.api.serializers import CustomerDetailSerializer
-
+from user_app.api.serializers import UserSerailizer
 class CreateTaskSerializer(serializers.ModelSerializer):
     reviewer = serializers.PrimaryKeyRelatedField(read_only=True)
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -34,8 +32,8 @@ class CreateTaskSerializer(serializers.ModelSerializer):
 
  
 class TaskListSerializer(serializers.ModelSerializer):
-    reviewer = UserProfileDetailsSerializer(read_only=True)
-    assignee = UserProfileDetailsSerializer(read_only=True)
+    reviewer = UserSerailizer(read_only=True)
+    assignee = UserSerailizer(read_only=True)
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
     customer = CustomerDetailSerializer(read_only=True)
     class Meta:
@@ -103,7 +101,7 @@ class CreateCommentSerializer(serializers.ModelSerializer):
 
 
 class ListCommentSerializer(serializers.ModelSerializer):
-    creator = UserProfileDetailsSerializer(read_only=True)
+    creator = UserSerailizer(read_only=True)
 
     class Meta:
         model = Comment
@@ -111,8 +109,8 @@ class ListCommentSerializer(serializers.ModelSerializer):
         
 
 class SingleTaskSerializer(serializers.ModelSerializer):
-    reviewer = UserProfileDetailsSerializer(read_only=True)
-    assignee = UserProfileDetailsSerializer(read_only=True)
+    reviewer = UserSerailizer(read_only=True)
+    assignee = UserSerailizer(read_only=True)
     customer = TaskCustomerSerializer(read_only=True)
     comments = ListCommentSerializer( source="task_comment", many=True, read_only=True)
     parent = ParentSerializer(read_only=True)
@@ -157,7 +155,7 @@ class LogCreateSerializer(serializers.ModelSerializer):
 
 class LogListSerializer(serializers.ModelSerializer):
     task = serializers.PrimaryKeyRelatedField(read_only=True)
-    updated_by = UserProfileDetailsSerializer(read_only=True)
+    updated_by = UserSerailizer(read_only=True)
 
     class Meta:
         model = Log

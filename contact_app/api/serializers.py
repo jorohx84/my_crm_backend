@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from ..models import Contact
-from profile_app.api.serializers import UserProfileDetailsSerializer
-
+from user_app.api.serializers import UserSerailizer
 class ListCreateContactSerializer(serializers.ModelSerializer):
     customer = serializers.PrimaryKeyRelatedField(read_only=True)
     created_by =serializers.PrimaryKeyRelatedField(read_only=True)
@@ -23,7 +22,7 @@ class ListCreateContactSerializer(serializers.ModelSerializer):
 
 class ContactDetailSerializer(serializers.ModelSerializer):
     # customer = serializers.PrimaryKeyRelatedField(read_only=True)
-    created_by =serializers.SerializerMethodField()
+    created_by =UserSerailizer(read_only=True)
     updated_by = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
@@ -44,5 +43,3 @@ class ContactDetailSerializer(serializers.ModelSerializer):
             "updated_by",
         ]
 
-    def get_created_by(self, obj):
-        return UserProfileDetailsSerializer(obj.created_by.userprofile).data

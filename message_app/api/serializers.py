@@ -4,7 +4,7 @@ from profile_app.models import UserProfile
 
 
 class NotificationSerializer(serializers.ModelSerializer):
-    recipient = serializers.PrimaryKeyRelatedField(queryset=UserProfile.objects.all())
+    recipient = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Notification

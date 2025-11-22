@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from ..models import Activity
 from profile_app.api.serializers import UserProfileDetailsSerializer
-
+from user_app.api.serializers import UserSerailizer
 class CreateActivitySerializer(serializers.ModelSerializer):
     contact = serializers.PrimaryKeyRelatedField(read_only=True)
     customer = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -22,7 +22,7 @@ class CreateActivitySerializer(serializers.ModelSerializer):
 class ActivityListSerializer(serializers.ModelSerializer):
     contact = serializers.SerializerMethodField()
     customer = serializers.SerializerMethodField()
-    user = UserProfileDetailsSerializer(read_only=True)
+    user = UserSerailizer(read_only=True)
 
     class Meta:
         model = Activity

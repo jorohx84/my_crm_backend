@@ -23,6 +23,7 @@ def create_account_admin(sender, instance, created, **kwargs):
             first_name='Accountadmin',
             last_name=instance.name,
             tenant=instance,
+            phone=instance.phone,
             is_staff=True,
             is_active=True,  
            

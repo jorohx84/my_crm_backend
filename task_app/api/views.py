@@ -48,7 +48,7 @@ class CreateTaskCommentView(generics.CreateAPIView):
     def perform_create(self, serializer):
         task_id=self.request.data["task"]
         serializer.save(
-            creator=self.request.user.userprofile, 
+            creator=self.request.user, 
             task_id=task_id
             )
 
