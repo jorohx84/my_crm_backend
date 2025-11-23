@@ -58,3 +58,6 @@ docker-compose.override.yml
 
 # Environment-Dateien
 .env/
+
+# Redis database dumps
+*.rdb
