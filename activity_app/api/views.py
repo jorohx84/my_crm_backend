@@ -24,3 +24,11 @@ class ActivityContactListView(generics.ListAPIView):
         contact_id = self.kwargs['contact_id']
         queryset = Activity.objects.filter(contact_id=contact_id)
         return queryset
+    
+class ActivityCustomerListView(generics.ListAPIView):
+    serializer_class = ActivityListSerializer
+
+    def get_queryset(self):
+        customer_id = self.kwargs['customer_id']
+        queryset = Activity.objects.filter(customer_id=customer_id)
+        return queryset

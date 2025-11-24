@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import CreateActivityView, ActivityContactListView
+from .views import CreateActivityView, ActivityContactListView, ActivityCustomerListView
 
 urlpatterns = [
     path('activities/', CreateActivityView.as_view(), name="activity-create" ),
-    path('activities/<int:contact_id>/', ActivityContactListView.as_view(), name="activity-contact" ),
+    path('activities/contact/<int:contact_id>/', ActivityContactListView.as_view(), name="activity-contact" ),
+    path('activities/customer/<int:customer_id>/', ActivityCustomerListView.as_view(), name="activity-customer" ),
 ]
