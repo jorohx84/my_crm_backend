@@ -17,7 +17,7 @@ def create_notification_from_task(sender, instance, created, **kwargs):
         Notification.objects.create(
             recipient=instance.assignee,
             text= "Neue Aufgabe wurde Ihrem Board hinzugefügt.",
-            url=['main', 'singlecustomer', instance.customer.id, 'task', instance.id ],
+            url=['main', 'singlecustomer', instance.customer.id, 'singletask', instance.id ],
            
         )
 
@@ -28,7 +28,7 @@ def create_notification_from_task(sender, instance, created, **kwargs):
             Notification.objects.create(
                 recipient=instance.assignee,
                 text= "Aufgabe wurde freigegeben.",
-                url=['main', 'singlecustomer', instance.customer.id, 'task', instance.id ],
+                url=['main', 'singlecustomer', instance.customer.id, 'singletask', instance.id ],
               
         )
             
