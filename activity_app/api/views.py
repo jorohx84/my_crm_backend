@@ -7,12 +7,12 @@ class CreateActivityView(generics.CreateAPIView):
     serializer_class = CreateActivitySerializer
 
     def perform_create(self, serializer):
-        user = self.request.user
+        created_by = self.request.user
         customer_id = self.request.data['customer']
         contact_id = self.request.data['contact']
 
         serializer.save(
-            user_id = user.id,
+            created_by = created_by,
             customer_id = customer_id,
             contact_id = contact_id
         )
@@ -32,3 +32,7 @@ class ActivityCustomerListView(generics.ListAPIView):
         customer_id = self.kwargs['customer_id']
         queryset = Activity.objects.filter(customer_id=customer_id)
         return queryset
+    
+class ActitityUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Activity.objects.all() 
+    serializer_class = CreateActivitySerializer

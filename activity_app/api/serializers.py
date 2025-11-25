@@ -5,7 +5,7 @@ from user_app.api.serializers import UserSerailizer
 class CreateActivitySerializer(serializers.ModelSerializer):
     contact = serializers.PrimaryKeyRelatedField(read_only=True)
     customer = serializers.PrimaryKeyRelatedField(read_only=True)
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    created_by = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Activity
@@ -13,7 +13,8 @@ class CreateActivitySerializer(serializers.ModelSerializer):
             "id",
             "contact",
             "customer",
-            "user",
+            "created_by",
+            "title",
             "description",
             "type",
             "date",
@@ -22,7 +23,7 @@ class CreateActivitySerializer(serializers.ModelSerializer):
 class ActivityListSerializer(serializers.ModelSerializer):
     contact = serializers.SerializerMethodField()
     customer = serializers.SerializerMethodField()
-    user = UserSerailizer(read_only=True)
+    created_by = UserSerailizer(read_only=True)
 
     class Meta:
         model = Activity
@@ -30,7 +31,8 @@ class ActivityListSerializer(serializers.ModelSerializer):
             "id",
             "contact",
             "customer",
-            "user",
+            "created_by",
+            "title",
             "description",
             "type",
             "date",
