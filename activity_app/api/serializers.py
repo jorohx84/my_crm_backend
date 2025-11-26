@@ -54,3 +54,19 @@ class ActivityListSerializer(serializers.ModelSerializer):
                     "companyname": obj.customer.companyname,
                 }
                 return customer
+            
+
+class UpdateActivitySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Activity
+        fields = [
+            "id",
+            "contact",
+            "customer",
+            "created_by",
+            "title",
+            "description",
+            "type",
+            "date",
+        ] 

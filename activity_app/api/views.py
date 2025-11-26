@@ -1,5 +1,5 @@
 from rest_framework import generics
-from .serializers import CreateActivitySerializer, ActivityListSerializer
+from .serializers import CreateActivitySerializer, ActivityListSerializer, UpdateActivitySerializer
 from ..models import Activity
 
 class CreateActivityView(generics.CreateAPIView):
@@ -35,4 +35,4 @@ class ActivityCustomerListView(generics.ListAPIView):
     
 class ActitityUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Activity.objects.all() 
-    serializer_class = CreateActivitySerializer
+    serializer_class = UpdateActivitySerializer
