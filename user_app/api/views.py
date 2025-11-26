@@ -15,7 +15,8 @@ class UserListView(generics.ListAPIView):
 
     def get_queryset(self):
         tenant_id = self.request.user.tenant
-        users = User.objects.filter(tenant_id=tenant_id, is_staff=False)
+        user = self.request.user
+        users = User.objects.filter(tenant_id=tenant_id, is_staff=False).exclude(id=user.id)
         return users
     
 class SingleUserView(generics.RetrieveAPIView):
