@@ -8,6 +8,7 @@ from profile_app.models import UserProfile
 from contact_app.models import Contact
 from django.contrib.auth import get_user_model
 from user_app.api.serializers import UserSerailizer
+from customer_app.api.serializers import CustomerSerializer
 User = get_user_model()
 class GlobalSearchView(APIView):
     def get(self, request, input):
@@ -34,3 +35,41 @@ class GlobalSearchView(APIView):
             "customers": list (customer_results),
             "contacts": list(contact_results),
         })
+    
+
+class SearchListView(APIView):
+    def get(self, request, field, value, list):
+        tenant = request.user.tenant
+
+        if not value:
+            return Response({"detail": "No query provided"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if list =='customers':
+            Model = Customer
+            Serialzer = CustomerSerializer
+
+        # Prüfen, ob das Feld im Modell existiert, um Fehler zu vermeiden
+        valid_fields = [f.name for f in Customer._meta.get_fields()]
+        if field not in valid_fields:
+            return Response({"detail": f"Invalid search field: {field}"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Dynamische Filterung
+        filter_kwargs = {f"{field}__icontains": value}
+        results = Model.objects.filter(tenant=tenant, **filter_kwargs)
+
+        serialized_results = Serialzer(results, many=True).data
+
+        return Response({
+            "results": serialized_results
+        })
+    
+
+class CountListView(APIView):
+    def get(self, request, list):
+        if list == 'customers':
+            Model = Customer
+        tenant = self.request.user.tenant
+
+        count = Model.objects.filter(tenant=tenant).count()
+
+        return Response({"count":count})
