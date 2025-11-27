@@ -64,12 +64,12 @@ class SearchListView(APIView):
         })
     
 
-class CountListView(APIView):
-    def get(self, request, list):
-        if list == 'customers':
-            Model = Customer
-        tenant = self.request.user.tenant
+# class CountListView(APIView):
+#     def get(self, request, list):
+#         if list == 'customers':
+#             Model = Customer
+#         tenant = self.request.user.tenant
 
-        count = Model.objects.filter(tenant=tenant).count()
+#         count = Model.objects.filter(tenant=tenant).count()
 
-        return Response({"count":count})
+#         return Response({"count":count})
