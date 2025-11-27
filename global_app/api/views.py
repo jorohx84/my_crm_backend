@@ -6,6 +6,8 @@ from customer_app.models import Customer
 from task_app.models import Task
 from profile_app.models import UserProfile
 from contact_app.models import Contact
+from activity_app.models import Activity
+from activity_app.api.serializers import ActivityListSerializer
 from django.contrib.auth import get_user_model
 from user_app.api.serializers import UserSerailizer
 from customer_app.api.serializers import CustomerSerializer
@@ -47,6 +49,7 @@ class SearchListView(APIView):
         if list =='customers':
             Model = Customer
             Serialzer = CustomerSerializer
+ 
 
         # Prüfen, ob das Feld im Modell existiert, um Fehler zu vermeiden
         valid_fields = [f.name for f in Customer._meta.get_fields()]
@@ -55,8 +58,9 @@ class SearchListView(APIView):
 
         # Dynamische Filterung
         filter_kwargs = {f"{field}__icontains": value}
-        results = Model.objects.filter(tenant=tenant, **filter_kwargs)
-
+        if list=='customers':
+            results = Model.objects.filter(tenant=tenant, **filter_kwargs)
+    
         serialized_results = Serialzer(results, many=True).data
 
         return Response({

@@ -31,7 +31,7 @@ class ActivityContactListView(generics.ListAPIView):
     filter_backends = [OrderingFilter]
  
     ordering_fields = ['date']
-    ordering = ['date']
+    ordering = ['-date']
     def get_queryset(self):
         contact_id = self.kwargs['contact_id']
         queryset = Activity.objects.filter(contact_id=contact_id)
@@ -43,7 +43,7 @@ class ActivityCustomerListView(generics.ListAPIView):
     filter_backends = [OrderingFilter]
  
     ordering_fields = ['date']
-    ordering = ['date']
+    ordering = ['-date']
     def get_queryset(self):
         customer_id = self.kwargs['customer_id']
         queryset = Activity.objects.filter(customer_id=customer_id)
