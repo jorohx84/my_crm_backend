@@ -1,9 +1,13 @@
-from rest_framework import generics
+from rest_framework import generics,status
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .serializers import CreateActivitySerializer, ActivityListSerializer, UpdateActivitySerializer
 from ..models import Activity
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import OrderingFilter
-
+from django.utils.dateparse import parse_date
+from django.utils.timezone import make_aware
+import datetime
 
 class CustomerPagination(PageNumberPagination):
     page_size = 25
@@ -52,3 +56,29 @@ class ActivityCustomerListView(generics.ListAPIView):
 class ActitityUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Activity.objects.all() 
     serializer_class = UpdateActivitySerializer
+
+
+class ActivitySearchView(APIView):
+    def get(self, request, key, id):
+        start = request.query_params.get("start")
+        end = request.query_params.get("end")
+        tenant= self.request.user.tenant
+
+        queryset = Activity.objects.filter(customer__tenant=tenant)
+        
+        filter_key = f"{key}_id"
+        qs = queryset.filter(**{filter_key: id})
+
+        if start:
+            start_date = make_aware(datetime.datetime.combine(parse_date(start), datetime.time.min))
+            qs = qs.filter(date__gte=start_date)
+
+        if end:
+            end_date = make_aware(datetime.datetime.combine(parse_date(end), datetime.time.max))
+            qs = qs.filter(date__lte=end_date)
+
+        qs = qs.order_by('-date') 
+        
+        serialized_results = ActivityListSerializer(qs, many=True).data
+
+        return Response({"result": serialized_results},status=status.HTTP_200_OK)

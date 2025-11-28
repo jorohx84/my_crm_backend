@@ -40,3 +40,25 @@ class SingleCustomerView(generics.RetrieveUpdateDestroyAPIView):
         serializer.save(updated_by=self.request.user)
 
 
+
+class CustomerSearchView(APIView):
+    def get(self, request, field, value):
+        tenant = request.user.tenant
+
+        if not value:
+            return Response({"detail": "No query provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Prüfen, ob das Feld im Modell existiert, um Fehler zu vermeiden
+        valid_fields = [f.name for f in Customer._meta.get_fields()]
+        if field not in valid_fields:
+            return Response({"detail": f"Invalid search field: {field}"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Dynamische Filterung
+        filter_kwargs = {f"{field}__icontains": value}
+        results = Customer.objects.filter(tenant=tenant, **filter_kwargs)
+    
+        serialized_results = CustomerSerializer(results, many=True).data
+
+        return Response({
+            "results": serialized_results
+        })
