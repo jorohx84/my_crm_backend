@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -65,8 +66,13 @@ class TaskBoardAssigneeView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs.get('user_id')
-        tasks = Task.objects.filter(assignee_id=user_id).exclude(state__in=['closed'])
+        tasks = Task.objects.filter(
+            Q(assignee_id=user_id) | Q(members__id=user_id)
+        ).exclude(state__in=['closed']).distinct()
         return tasks
+    
+
+
     
 class TaskBoardReviewerView(generics.ListAPIView):
     serializer_class=TaskListSerializer

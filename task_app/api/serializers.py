@@ -34,13 +34,11 @@ class CreateTaskSerializer(serializers.ModelSerializer):
 class TaskListSerializer(serializers.ModelSerializer):
     reviewer = UserSerailizer(read_only=True)
     assignee = UserSerailizer(read_only=True)
-    parent = serializers.PrimaryKeyRelatedField(read_only=True)
     customer = CustomerDetailSerializer(read_only=True)
     class Meta:
         model = Task
         fields = [
             "id",
-            "parent",
             "title",
             "description",
             "customer",
@@ -52,15 +50,9 @@ class TaskListSerializer(serializers.ModelSerializer):
             "reviewer",
             "subtasks",
             "board_position",
+            "members",
         ]
 
-class ParentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Task
-        fields = [
-            "id",
-            "title",
-        ]
 
 class TaskCustomerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -88,7 +80,7 @@ class TaskUpdateSerializer(serializers.ModelSerializer):
             "log",
             "subtasks",
             "board_position",
-           
+            "members",
         ]
 
 class CreateCommentSerializer(serializers.ModelSerializer):
@@ -113,12 +105,11 @@ class SingleTaskSerializer(serializers.ModelSerializer):
     assignee = UserSerailizer(read_only=True)
     customer = TaskCustomerSerializer(read_only=True)
     comments = ListCommentSerializer( source="task_comment", many=True, read_only=True)
-    parent = ParentSerializer(read_only=True)
+    members = UserSerailizer(many=True, read_only=True)
     class Meta:
         model = Task
         fields = [
             "id",
-            "parent",
             "title",
             "description",
             "customer",
@@ -131,7 +122,7 @@ class SingleTaskSerializer(serializers.ModelSerializer):
             "comments",
             "log",
             "subtasks",
-            
+            "members",
         ]
 
 

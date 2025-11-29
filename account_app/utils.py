@@ -2,12 +2,15 @@ from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
-from django.conf import settings
-from django.contrib.auth import get_user_model
 
-User = get_user_model()
+
+
+
 
 def send_set_password_email(user_pk):
+    from django.conf import settings
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
     try:
         user = User.objects.get(pk=user_pk)
     except User.DoesNotExist:
@@ -63,6 +66,9 @@ def send_manual_reset_password_email(user_pk):
     """
     E-Mail für manuelles Passwort-Reset (Admin-Initiated)
     """
+    from django.conf import settings
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
     try:
         user = User.objects.get(pk=user_pk)
     except User.DoesNotExist:

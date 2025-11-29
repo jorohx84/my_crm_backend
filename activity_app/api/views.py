@@ -9,7 +9,7 @@ from django.utils.dateparse import parse_date
 from django.utils.timezone import make_aware
 import datetime
 
-class CustomerPagination(PageNumberPagination):
+class ActivityPagination(PageNumberPagination):
     page_size = 25
     page_size_query_param = "size"
     max_page_size = 100
@@ -31,7 +31,7 @@ class CreateActivityView(generics.CreateAPIView):
 
 class ActivityContactListView(generics.ListAPIView):
     serializer_class = ActivityListSerializer
-    pagination_class = CustomerPagination
+    pagination_class = ActivityPagination
     filter_backends = [OrderingFilter]
  
     ordering_fields = ['date']
@@ -43,7 +43,7 @@ class ActivityContactListView(generics.ListAPIView):
     
 class ActivityCustomerListView(generics.ListAPIView):
     serializer_class = ActivityListSerializer
-    pagination_class = CustomerPagination
+    pagination_class = ActivityPagination
     filter_backends = [OrderingFilter]
  
     ordering_fields = ['date']

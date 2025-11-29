@@ -7,7 +7,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     tenant = serializers.SerializerMethodField()  
     class Meta:
         model = UserProfile
-        fields = ["id", "fullname", "user", "tenant", "first_name", "last_name", "email", "phone", "last_logout", "last_inbox_check"]
+        fields = ["id", "fullname", "user", "tenant", "first_name", "last_name", "email", "phone", "last_logout", "last_inbox_check", "color"]
         
     def get_fullname(self, obj):
         return f"{obj.first_name} {obj.last_name}"
@@ -23,7 +23,7 @@ class UserProfileDetailsSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = UserProfile
-        fields = ["id","fullname", "email", "phone", "department", "initials"]
+        fields = ["id","fullname", "email", "phone", "department", "initials", "color"]
         read_only_fields = ["first_name", "last_name"] 
 
     def get_fullname(self, obj):

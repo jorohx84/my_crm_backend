@@ -1,6 +1,18 @@
-from django.db import models
+from django.db import models, transaction
 from django.conf import settings
 
+
+COLOR_PALETTE = [
+    "#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD",
+    "#8C564B", "#E377C2", "#7F7F7F", "#BCBD22", "#17BECF",
+    "#393B79", "#637939", "#8C6D31", "#843C39", "#7B4173",
+    "#3182BD", "#31A354", "#756BB1", "#E6550D", "#636363",
+    "#9C9EDE", "#F7B6D2", "#CEDB9C", "#FF9896", "#C5B0D5",
+    "#C49C94", "#F7B174", "#A1D99B", "#A6CEE3", "#FDBF6F",
+    "#B2DF8A", "#FB9A99", "#CAB2D6", "#6A3D9A", "#FF7F00",
+    "#B15928", "#8DD3C7", "#FFFFB3", "#BEBADA", "#FB8072",
+    "#80B1D3", "#FDB462", "#B3DE69", "#FCCDE5", "#D9D9D9"
+]
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
@@ -11,7 +23,21 @@ class UserProfile(models.Model):
     department = models.CharField(default="", null=True, blank=True)
     last_logout = models.CharField(default='1900-01-01T00:00:00.000Z')
     last_inbox_check = models.CharField(default='1900-01-01T00:00:00.000Z')
+    color = models.CharField(max_length=7)
     
+    @staticmethod
+    def _get_available_color():
+        with transaction.atomic():
+            used_colors = UserProfile.objects.select_for_update().values_list("color", flat=True)
+            available_colors = [c for c in COLOR_PALETTE if c not in used_colors]
+            if not available_colors:
+                raise ValueError("Keine freien Farben mehr!")
+            return available_colors[0]
+
+    def save(self, *args, **kwargs):
+        if not self.color:
+            self.color = self._get_available_color()
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-    
+        return f"{self.first_name} {self.last_name}".strip()

@@ -34,7 +34,7 @@ class Task(models.Model):
     subtasks = models.JSONField(default=list, null=True, blank=True)
     board_position = models.IntegerField(default=0)
     history = HistoricalRecords()
-
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 
 class Comment(models.Model):
     task = models.ForeignKey(Task, null=True, blank=True, on_delete=models.CASCADE, related_name="task_comment")

@@ -38,14 +38,6 @@ class ResgistrationSerializer(serializers.ModelSerializer):
         user.set_password(raw_password)
         user.save()
 
-        # UserProfile.objects.create(
-        #     user=user,
-        #     email=user.email,
-        #     first_name=user.first_name,
-        #     last_name=user.last_name,
-        #     phone=phone
-        # )
-
         return user
     
 
