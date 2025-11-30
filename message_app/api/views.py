@@ -19,7 +19,7 @@ class NotificationListView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs['user_id']
-        queryset = Notification.objects.filter(recipient_id=user_id)
+        queryset = Notification.objects.filter(recipients__id=user_id)
         return queryset
 
 
@@ -34,7 +34,7 @@ class NewMessagesCountView(APIView):
         user = request.user
     
 
-        messages = Notification.objects.filter(recipient_id=user.id, is_read=False)
+        messages = Notification.objects.filter(recipients__id=user.id, is_read=False)
 
 
         count = messages.count()

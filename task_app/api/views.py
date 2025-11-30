@@ -12,8 +12,10 @@ class CreateTaskView(generics.CreateAPIView):
     serializer_class=CreateTaskSerializer
  
     def perform_create(self, serializer):
+        user = self.request.user
         serializer.save(
-            reviewer=self.request.user,
+            reviewer=user,
+            created_by=user,
             )
 
 
@@ -66,9 +68,7 @@ class TaskBoardAssigneeView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs.get('user_id')
-        tasks = Task.objects.filter(
-            Q(assignee_id=user_id) | Q(members__id=user_id)
-        ).exclude(state__in=['closed']).distinct()
+        tasks = Task.objects.filter( Q(members__id=user_id)).exclude(state__in=['closed']).distinct()
         return tasks
     
 
@@ -88,7 +88,7 @@ class TaskBoardRealesesView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs['user_id']
-        tasks = Task.objects.filter(reviewer_id=user_id, state='released')
+        tasks = Task.objects.filter(reviewer_id=user_id, state='done')
         return tasks
     
 class CreateLogView(generics.CreateAPIView):

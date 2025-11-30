@@ -21,20 +21,23 @@ class Task(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="customer_tasks")
-    assignee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="assigned_tasks")
     state = models.CharField(max_length=25, choices=STATE_TYPE, default="undone")
     comments = models.JSONField(default=list)
     priority = models.CharField(max_length=25, choices=PRIO_TYPE, default="low")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     due_date = models.DateTimeField()
-    reviewer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='review_tasks')
+    reviewer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviewed_tasks')
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_tasks')
     completed_at = models.DateTimeField(null=True, blank=True)
     log = models.JSONField(default=list, blank=True)
     subtasks = models.JSONField(default=list, null=True, blank=True)
     board_position = models.IntegerField(default=0)
-    history = HistoricalRecords()
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
+
+
+    def __str__(self):
+        return self.title
 
 class Comment(models.Model):
     task = models.ForeignKey(Task, null=True, blank=True, on_delete=models.CASCADE, related_name="task_comment")

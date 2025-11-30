@@ -5,21 +5,21 @@ from customer_app.api.serializers import CustomerDetailSerializer
 from user_app.api.serializers import UserSerailizer
 class CreateTaskSerializer(serializers.ModelSerializer):
     reviewer = serializers.PrimaryKeyRelatedField(read_only=True)
-    parent = serializers.PrimaryKeyRelatedField(read_only=True)
+    created_by = serializers.PrimaryKeyRelatedField(read_only=True)
+   
     class Meta:
         model = Task
         fields = [
             "id",
-            "parent",
             "title",
             "description",
             "customer",
-            "assignee",
             "state",
             "priority",
             "created_at",
             "due_date",
             "reviewer",
+            "created_by",
             "log",
             "subtasks",
         ]
@@ -33,7 +33,6 @@ class CreateTaskSerializer(serializers.ModelSerializer):
  
 class TaskListSerializer(serializers.ModelSerializer):
     reviewer = UserSerailizer(read_only=True)
-    assignee = UserSerailizer(read_only=True)
     customer = CustomerDetailSerializer(read_only=True)
     class Meta:
         model = Task
@@ -42,7 +41,6 @@ class TaskListSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "customer",
-            "assignee",
             "state",
             "priority",
             "created_at",
@@ -71,7 +69,6 @@ class TaskUpdateSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "customer",
-            "assignee",
             "state",
             "priority",
             "created_at",
@@ -102,7 +99,6 @@ class ListCommentSerializer(serializers.ModelSerializer):
 
 class SingleTaskSerializer(serializers.ModelSerializer):
     reviewer = UserSerailizer(read_only=True)
-    assignee = UserSerailizer(read_only=True)
     customer = TaskCustomerSerializer(read_only=True)
     comments = ListCommentSerializer( source="task_comment", many=True, read_only=True)
     members = UserSerailizer(many=True, read_only=True)
@@ -113,7 +109,6 @@ class SingleTaskSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "customer",
-            "assignee",
             "state",
             "priority",
             "created_at",

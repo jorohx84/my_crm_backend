@@ -9,9 +9,9 @@ channel_layer = get_channel_layer()
 
 @receiver(post_save, sender=Notification)
 def notify_via_websocket(sender, instance, created, **kwargs):
-       
-        print(f"Signal ausgelöst: id={instance.id}, created={created}, is_read={instance.is_read}")
-        group_name = f'notifications_{instance.recipient.id}'
+    print(f"Signal ausgelöst: id={instance.id}, created={created}, is_read={instance.is_read}")
+    for recipient in instance.recipients.all():
+        group_name = f'notifications_{recipient.id}'
         async_to_sync(channel_layer.group_send)(
             group_name,
             {
