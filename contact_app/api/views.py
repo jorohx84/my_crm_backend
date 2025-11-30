@@ -44,6 +44,19 @@ class ContactListView(generics.ListAPIView):
         queryset = Contact.objects.filter(customer_id=customer_id)
         return queryset
     
+class ContactListWrapperView(generics.ListAPIView):
+    serializer_class = ListCreateContactSerializer
+    filter_backends = [OrderingFilter]
+ 
+    ordering_fields = ['name']
+    ordering = ['name']   
+
+
+    def get_queryset(self):
+        customer_id = self.kwargs['customer_id']
+        queryset = Contact.objects.filter(customer_id=customer_id)
+        return queryset
+    
 
 class ContactDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset=Contact.objects.all()
