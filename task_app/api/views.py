@@ -44,7 +44,7 @@ class SingleTaskView(generics.RetrieveUpdateDestroyAPIView):
 
 
 
-class CreateTaskCommentView(generics.CreateAPIView):
+class CreateTaskCommentView(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CreateCommentSerializer
 
@@ -55,6 +55,13 @@ class CreateTaskCommentView(generics.CreateAPIView):
             task_id=task_id
             )
 
+class CommentListView(generics.ListAPIView):
+    serializer_class=ListCommentSerializer
+    def get_queryset(self):
+        task_id=self.kwargs["task_id"]
+        queryset = Comment.objects.filter(task_id=task_id)
+        return queryset
+    
 
 class CommentUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset=Comment.objects.all()

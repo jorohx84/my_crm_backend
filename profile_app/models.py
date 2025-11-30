@@ -1,6 +1,6 @@
 from django.db import models, transaction
 from django.conf import settings
-
+import random
 
 COLOR_PALETTE = [
     "#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD",
@@ -23,20 +23,33 @@ class UserProfile(models.Model):
     department = models.CharField(default="", null=True, blank=True)
     last_logout = models.CharField(default='1900-01-01T00:00:00.000Z')
     last_inbox_check = models.CharField(default='1900-01-01T00:00:00.000Z')
-    color = models.CharField(max_length=7)
+    color = models.CharField(max_length=7, unique=True)
     
     @staticmethod
-    def _get_available_color():
+    def _generate_random_hex_color():
+        return "#" + ''.join(random.choices("0123456789ABCDEF", k=6))
+
+    @classmethod
+    def _get_unique_color(cls):
         with transaction.atomic():
-            used_colors = UserProfile.objects.select_for_update().values_list("color", flat=True)
-            available_colors = [c for c in COLOR_PALETTE if c not in used_colors]
-            if not available_colors:
-                raise ValueError("Keine freien Farben mehr!")
-            return available_colors[0]
+            used_colors = set(
+                cls.objects.select_for_update().values_list("color", flat=True)
+            )
+
+            # Zuerst Palette verwenden
+            for color in COLOR_PALETTE:
+                if color not in used_colors:
+                    return color
+
+            # Wenn Palette voll → unendlich neue Farben generieren
+            while True:
+                new_color = cls._generate_random_hex_color()
+                if new_color not in used_colors:
+                    return new_color
 
     def save(self, *args, **kwargs):
         if not self.color:
-            self.color = self._get_available_color()
+            self.color = self._get_unique_color()
         super().save(*args, **kwargs)
 
     def __str__(self):
