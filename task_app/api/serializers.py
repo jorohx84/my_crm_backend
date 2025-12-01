@@ -134,7 +134,8 @@ class LogCreateSerializer(serializers.ModelSerializer):
             "logged_at",
             "updated_by",
             "new_state",
-           
+            "type",
+            "subtask",
         ]
         
 
@@ -152,7 +153,8 @@ class LogListSerializer(serializers.ModelSerializer):
             "logged_at",
             "updated_by",
             "new_state",
-         
+            "type",
+            "subtask",
         ]
 
 class CreateTaskTemplateSerializer(serializers.ModelSerializer):

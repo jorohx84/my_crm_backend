@@ -52,6 +52,8 @@ class Log(models.Model):
     logged_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="customer_log")
     new_state = models.CharField()
+    subtask = models.CharField(default='', blank=True, null=True)
+    type = models.CharField(default='')
 
 class Tasktemplate(models.Model):
     title = models.CharField()

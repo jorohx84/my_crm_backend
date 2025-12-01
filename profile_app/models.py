@@ -23,7 +23,7 @@ class UserProfile(models.Model):
     department = models.CharField(default="", null=True, blank=True)
     last_logout = models.CharField(default='1900-01-01T00:00:00.000Z')
     last_inbox_check = models.CharField(default='1900-01-01T00:00:00.000Z')
-    color = models.CharField(max_length=7, unique=True)
+    color = models.CharField(max_length=7)
     
     @staticmethod
     def _generate_random_hex_color():
