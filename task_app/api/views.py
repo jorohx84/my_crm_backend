@@ -2,7 +2,7 @@ from django.db.models import Q
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import CreateTaskSerializer, TaskListSerializer, SingleTaskSerializer, CreateCommentSerializer, ListCommentSerializer, TaskUpdateSerializer, LogCreateSerializer, LogListSerializer, CreateTaskTemplateSerializer
+from .serializers import CreateTaskSerializer, TaskListSerializer, SingleTaskSerializer, CreateCommentSerializer, ListCommentSerializer, CommentUpdateSerializer, TaskUpdateSerializer, LogCreateSerializer, LogListSerializer, CreateTaskTemplateSerializer
 from ..models import Task, Comment, Log, Tasktemplate
 from profile_app.models import UserProfile
 from django.shortcuts import get_object_or_404
@@ -65,7 +65,7 @@ class CommentListView(generics.ListAPIView):
 
 class CommentUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset=Comment.objects.all()
-    serializer_class=ListCommentSerializer
+    serializer_class=CommentUpdateSerializer
 
 
           

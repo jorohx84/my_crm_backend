@@ -96,11 +96,16 @@ class ListCommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ["id", "text", "creator", "created_at", "task"]
         
+class CommentUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ["text"]  
+
 
 class SingleTaskSerializer(serializers.ModelSerializer):
     reviewer = UserSerailizer(read_only=True)
     customer = TaskCustomerSerializer(read_only=True)
-    comments = ListCommentSerializer( source="task_comment", many=True, read_only=True)
+    # comments = ListCommentSerializer( source="task_comment", many=True, read_only=True)
     members = UserSerailizer(many=True, read_only=True)
     class Meta:
         model = Task
@@ -114,7 +119,7 @@ class SingleTaskSerializer(serializers.ModelSerializer):
             "created_at",
             "due_date",
             "reviewer",
-            "comments",
+            # "comments",
             "log",
             "subtasks",
             "members",
