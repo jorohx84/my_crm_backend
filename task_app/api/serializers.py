@@ -22,6 +22,7 @@ class CreateTaskSerializer(serializers.ModelSerializer):
             "created_by",
             "log",
             "subtasks",
+            "members"
         ]
         read_only_fields = [
             "id", 
@@ -34,6 +35,7 @@ class CreateTaskSerializer(serializers.ModelSerializer):
 class TaskListSerializer(serializers.ModelSerializer):
     reviewer = UserSerailizer(read_only=True)
     customer = CustomerDetailSerializer(read_only=True)
+    members = UserSerailizer(many=True, read_only=True)
     class Meta:
         model = Task
         fields = [

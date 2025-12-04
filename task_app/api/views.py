@@ -13,10 +13,13 @@ class CreateTaskView(generics.CreateAPIView):
  
     def perform_create(self, serializer):
         user = self.request.user
+       
         serializer.save(
             reviewer=user,
             created_by=user,
             )
+        
+  
 
 
 class TaskListView(generics.ListAPIView):
