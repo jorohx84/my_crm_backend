@@ -11,6 +11,7 @@ from activity_app.api.serializers import ActivityListSerializer
 from django.contrib.auth import get_user_model
 from user_app.api.serializers import UserSerailizer
 from customer_app.api.serializers import CustomerSerializer
+from contact_app.api.serializers import ContactSearchSerializer
 User = get_user_model()
 class GlobalSearchView(APIView):
     def get(self, request, input):
@@ -50,3 +51,18 @@ class GlobalSearchView(APIView):
 #         count = Model.objects.filter(tenant=tenant).count()
 
 #         return Response({"count":count})
+
+class ContactSearchView(APIView):
+    def get(self, request, input):
+        if not input:
+            return Response({"detail": "No query provided"}, status=status.HTTP_400_BAD_REQUEST)
+        tenant = request.user.tenant
+
+        query = Contact.objects.filter(customer__tenant=tenant)
+
+        results = query.filter(Q(name__icontains=input))
+
+        data = ContactSearchSerializer(results, many=True).data
+
+        return Response(list(data))
+           
